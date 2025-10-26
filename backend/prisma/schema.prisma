@@ -1,0 +1,98 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // ou "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String
+  email          String          @unique
+  password       String
+  gender         Gender
+  age            Int
+  bio            String?
+  location       String?
+  profilePhoto   String?         // URL da foto principal
+  photos         Photo[]
+  interests      UserInterest[]
+  preferences    Preference?
+  likesSent      Like[]          @relation("LikesSent")
+  likesReceived  Like[]          @relation("LikesReceived")
+  matches1       Match[]         @relation("MatchUser1")
+  matches2       Match[]         @relation("MatchUser2")
+  messages       Message[]       @relation("MessagesSent")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Photo {
+  id        Int      @id @default(autoincrement())
+  url       String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Interest {
+  id      Int             @id @default(autoincrement())
+  name    String           @unique
+  users   UserInterest[]
+}
+
+model UserInterest {
+  userId     String
+  interestId Int
+  user       User      @relation(fields: [userId], references: [id])
+  interest   Interest  @relation(fields: [interestId], references: [id])
+  @@id([userId, interestId])
+}
+
+model Preference {
+  id              Int      @id @default(autoincrement())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  minAge          Int?
+  maxAge          Int?
+  preferredGender Gender?
+  maxDistanceKm   Int?
+}
+
+model Like {
+  id          Int      @id @default(autoincrement())
+  senderId    String
+  receiverId  String
+  sender      User     @relation("LikesSent", fields: [senderId], references: [id])
+  receiver    User     @relation("LikesReceived", fields: [receiverId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Match {
+  id        Int      @id @default(autoincrement())
+  user1Id   String
+  user2Id   String
+  user1     User     @relation("MatchUser1", fields: [user1Id], references: [id])
+  user2     User     @relation("MatchUser2", fields: [user2Id], references: [id])
+  createdAt DateTime @default(now())
+  messages  Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  senderId  String
+  matchId   Int
+  content   String
+  createdAt DateTime @default(now())
+  sender    User     @relation("MessagesSent", fields: [senderId], references: [id])
+  match     Match    @relation(fields: [matchId], references: [id])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
