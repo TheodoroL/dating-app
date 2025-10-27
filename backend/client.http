@@ -1,0 +1,28 @@
+@rota = http://localhost:8080
+
+###
+POST {{rota}}/auth/register
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johnw@gmail.com",
+    "password": "password123",
+    "age": 25,
+    "gender":"MALE"
+}
+###
+POST {{rota}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "johnw@gmail.com",
+    "password": "password123"
+}
+
+# User 
+
+###
+GET {{rota}}/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1ZjVlN2IzLTgyN2MtNGRhMC05MzAxLTZiNGRlYmYzOGNlNCIsImVtYWlsIjoiam9obndAZ21haWwuY29tIiwiaWF0IjoxNzYxNTgyNjk2LCJleHAiOjE3NjE1ODYyOTZ9.bL8V48m6vqF14KsBhiVojUhjBRSeEyl8lv5I9-D9p-U
+content-type: application/json
