@@ -1,0 +1,13 @@
+button{
+    width:212px;
+    background: linear-gradient(90deg,#DD3562, #8354FF);
+    border-radius: 80px;
+    padding: 12px 24px;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+     &:active {
+    transform: scale(0.98);
+  }
+}
