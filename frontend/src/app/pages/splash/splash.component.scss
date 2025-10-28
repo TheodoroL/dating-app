@@ -1,0 +1,288 @@
+.splash-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: clamp(40px, 8vh, 80px) clamp(20px, 5vw, 40px) clamp(60px, 10vh, 100px);
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 50%, #1a0033 100%);
+  position: relative;
+  overflow: hidden;
+
+  // Bolinhas decorativas animadas
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  &::before {
+    width: clamp(80px, 15vw, 150px);
+    height: clamp(80px, 15vw, 150px);
+    background: linear-gradient(135deg, #7b2cff, #ff6fb5);
+    top: 10%;
+    left: 15%;
+    animation-delay: 0s;
+  }
+
+  &::after {
+    width: clamp(60px, 12vw, 120px);
+    height: clamp(60px, 12vw, 120px);
+    background: linear-gradient(135deg, #ff6fb5, #ff8c42);
+    bottom: 20%;
+    right: 10%;
+    animation-delay: 2s;
+  }
+}
+
+// Bolinhas adicionais
+.splash-root {
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.5;
+    animation: float 8s ease-in-out infinite;
+
+    &:nth-child(1) {
+      width: clamp(40px, 8vw, 80px);
+      height: clamp(40px, 8vw, 80px);
+      background: linear-gradient(135deg, #4169e1, #00bfff);
+      top: 25%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+
+    &:nth-child(2) {
+      width: clamp(50px, 10vw, 100px);
+      height: clamp(50px, 10vw, 100px);
+      background: linear-gradient(135deg, #ff6fb5, #c724b1);
+      bottom: 30%;
+      left: 10%;
+      animation-delay: 3s;
+    }
+
+    &:nth-child(3) {
+      width: clamp(30px, 6vw, 60px);
+      height: clamp(30px, 6vw, 60px);
+      background: linear-gradient(135deg, #7b2cff, #4169e1);
+      top: 60%;
+      right: 15%;
+      animation-delay: 4s;
+    }
+  }
+}
+
+// Container para centralizar o conteúdo
+.branding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.logo {
+  width: min(400px, 90vw);
+  height: min(400px, 90vw);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: clamp(20px, 5vh, 40px);
+  position: relative;
+  z-index: 2;
+  
+  .logo-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    z-index: 1;
+  }
+
+  .logo-main {
+    position: relative;
+    width: 50%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    z-index: 2;
+    filter: drop-shadow(0 10px 30px rgba(123, 44, 255, 0.3));
+  }
+  
+  // Tablet
+  @media (max-width: 768px) {
+    width: min(380px, 90vw);
+    height: min(380px, 90vw);
+
+    .logo-main {
+      width: 48%;
+    }
+  }
+  
+  // Mobile
+  @media (max-width: 480px) {
+    width: min(380px, 92vw);
+    height: min(380px, 92vw);
+    margin-bottom: clamp(15px, 4vh, 30px);
+
+    .logo-main {
+      width: 45%;
+    }
+  }
+
+  // Mobile muito pequeno
+  @media (max-width: 360px) {
+    width: min(340px, 90vw);
+    height: min(340px, 90vw);
+
+    .logo-main {
+      width: 42%;
+    }
+  }
+}
+
+.cta-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  z-index: 2;
+  position: relative;
+}
+
+.cta {
+  padding: clamp(14px, 3.5vw, 18px) clamp(40px, 8vw, 60px);
+  border-radius: clamp(25px, 5vw, 30px);
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: clamp(15px, 4vw, 18px);
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: visible;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 12px);
+  background: linear-gradient(135deg, #8354FF 0%, #DD3562 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  .arrow {
+    font-size: clamp(18px, 4.5vw, 22px);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    background: linear-gradient(135deg, #8354FF 0%, #DD3562 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+    
+    .arrow {
+      transform: translateX(4px);
+    }
+  }
+  
+  &:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+  }
+  
+  // Tablet
+  @media (max-width: 768px) {
+    padding: clamp(12px, 3vw, 16px) clamp(35px, 7vw, 50px);
+    font-size: clamp(14px, 3.5vw, 17px);
+  }
+
+  // Mobile
+  @media (max-width: 480px) {
+    padding: clamp(12px, 3vw, 14px) clamp(30px, 6vw, 40px);
+    font-size: clamp(14px, 3.5vw, 16px);
+    width: auto;
+    min-width: 200px;
+    max-width: 85vw;
+  }
+  
+  // Mobile pequeno
+  @media (max-width: 360px) {
+    min-width: 180px;
+    max-width: 90vw;
+    padding: 12px 30px;
+  }
+}
+
+// Animações
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-10px) scale(0.95);
+  }
+  75% {
+    transform: translateY(-25px) translateX(5px) scale(1.02);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.branding {
+  animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+
+.logo {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.cta {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+// Efeito de pulsação nas bolinhas
+.splash-root::before,
+.splash-root::after,
+.splash-root .orb {
+  animation: float 8s ease-in-out infinite, pulse 4s ease-in-out infinite;
+}

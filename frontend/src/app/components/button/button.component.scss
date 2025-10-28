@@ -1,13 +1,24 @@
-button{
-    width:212px;
-    background: linear-gradient(90deg,#DD3562, #8354FF);
-    border-radius: 80px;
-    padding: 12px 24px;
-    color: white;
-    border: none;
-    cursor: pointer;
+button {
+  width: 100%;
+  max-width: clamp(200px, 50vw, 280px);
+  background: linear-gradient(135deg, #8354FF, #DD3562);
+  border-radius: clamp(20px, 4vw, 28px);
+  padding: clamp(14px, 3.5vw, 18px) clamp(24px, 6vw, 40px);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: clamp(15px, 4vw, 18px);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(131, 84, 255, 0.4);
 
-     &:active {
-    transform: scale(0.98);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(131, 84, 255, 0.6);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
   }
 }

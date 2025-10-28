@@ -1,0 +1,65 @@
+<div class="login-root">
+    <div class="header">
+        <a class="back-button" routerLink="/">
+            <span class="arrow-back">←</span>
+        </a>
+        <h2 class="title">Personal Details</h2>
+    </div>
+
+    <div class="content">
+        <div class="profile-section">
+            <h1 class="main-title">Profile Details</h1>
+            <p class="subtitle">Fill up the following details</p>
+
+            <div class="avatar-container">
+                <div class="avatar">
+                    <img src="assets/avatar-placeholder.png" alt="Profile Avatar" *ngIf="avatarUrl" [src]="avatarUrl">
+                    <div class="avatar-placeholder" *ngIf="!avatarUrl">
+                        <span class="user-icon">👤</span>
+                    </div>
+                </div>
+                <button class="camera-button">
+                    <span class="camera-icon">📷</span>
+                </button>
+            </div>
+        </div>
+
+        <form class="profile-form">
+            <div class="form-group">
+                <app-input typeInput="text" placeholderInput="First Name">
+                </app-input>
+            </div>
+
+            <div class="form-group">
+                <app-input typeInput="text" placeholderInput="Last Name">
+                </app-input>
+            </div>
+
+            <div class="form-group">
+                <app-input typeInput="date" placeholderInput="DOB">
+                </app-input>
+            </div>
+            <div class="form-group">
+                <app-input typeInput="email" placeholderInput="Email">
+                </app-input>
+            </div>
+            <div class="form-group">
+                <app-input typeInput="password" placeholderInput="password">
+                </app-input>
+            </div>
+
+            <div class="form-group">
+                <select class="custom-select">
+                    <option value="" disabled selected>Select your preference</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="button-container">
+                <app-button textButton="Continue"></app-button>
+            </div>
+        </form>
+    </div>
+</div>
