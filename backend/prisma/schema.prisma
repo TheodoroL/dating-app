@@ -10,22 +10,14 @@ datasource db {
 
 model User {
   id             String          @id @default(uuid())
-  name           String
+  firstname      String
+  lastname       String
   email          String          @unique
   password       String
   gender         Gender
-  age            Int
-  bio            String?
-  location       String?
-  profilePhoto   String?         // URL da foto principal
+  preference   Gender
+  dob        DateTime
   photos         Photo[]
-  interests      UserInterest[]
-  preferences    Preference?
-  likesSent      Like[]          @relation("LikesSent")
-  likesReceived  Like[]          @relation("LikesReceived")
-  matches1       Match[]         @relation("MatchUser1")
-  matches2       Match[]         @relation("MatchUser2")
-  messages       Message[]       @relation("MessagesSent")
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -34,61 +26,50 @@ model Photo {
   id        Int      @id @default(autoincrement())
   url       String
   userId    String
+  profilePhoto Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
 
-model Interest {
-  id      Int             @id @default(autoincrement())
-  name    String           @unique
-  users   UserInterest[]
-}
-
-model UserInterest {
-  userId     String
-  interestId Int
-  user       User      @relation(fields: [userId], references: [id])
-  interest   Interest  @relation(fields: [interestId], references: [id])
-  @@id([userId, interestId])
-}
-
-model Preference {
-  id              Int      @id @default(autoincrement())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id])
-  minAge          Int?
-  maxAge          Int?
-  preferredGender Gender?
-  maxDistanceKm   Int?
-}
-
+// Tabela de likes: registra quando um usuário curte outro
+// Se user A curte user B → cria registro (fromUserId: A, toUserId: B)
+// Se user B também curte user A → cria registro (fromUserId: B, toUserId: A)
+// Quando ambos os registros existem = MATCH automático!
 model Like {
-  id          Int      @id @default(autoincrement())
-  senderId    String
-  receiverId  String
-  sender      User     @relation("LikesSent", fields: [senderId], references: [id])
-  receiver    User     @relation("LikesReceived", fields: [receiverId], references: [id])
-  createdAt   DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  fromUserId String   // Quem deu o like (você)
+  toUserId   String   // Quem recebeu o like (pessoa que você curtiu)
+  createdAt  DateTime @default(now())
+
+  @@unique([fromUserId, toUserId]) // Evita que você curta a mesma pessoa 2x
+  @@index([toUserId]) // Otimiza busca de "quem me curtiu"
 }
 
+// Match: criado quando dois usuários deram like um no outro
+// Permite que eles conversem através de mensagens
 model Match {
-  id        Int      @id @default(autoincrement())
-  user1Id   String
-  user2Id   String
-  user1     User     @relation("MatchUser1", fields: [user1Id], references: [id])
-  user2     User     @relation("MatchUser2", fields: [user2Id], references: [id])
-  createdAt DateTime @default(now())
-  messages  Message[]
+  id        Int       @id @default(autoincrement())
+  user1Id   String    // ID do primeiro usuário
+  user2Id   String    // ID do segundo usuário
+  createdAt DateTime  @default(now())
+  messages  Message[] // Mensagens trocadas neste match
+
+  @@unique([user1Id, user2Id]) // Evita matches duplicados
+  @@index([user1Id])
+  @@index([user2Id])
 }
 
+// Mensagens trocadas dentro de um match
 model Message {
   id        Int      @id @default(autoincrement())
-  senderId  String
-  matchId   Int
-  content   String
+  senderId  String   // ID de quem enviou a mensagem
+  matchId   Int      // ID do match onde a mensagem foi enviada
+  content   String   // Conteúdo da mensagem
   createdAt DateTime @default(now())
-  sender    User     @relation("MessagesSent", fields: [senderId], references: [id])
   match     Match    @relation(fields: [matchId], references: [id])
+
+  @@index([matchId])
+  @@index([senderId])
 }
 
 enum Gender {

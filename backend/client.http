@@ -1,28 +1,143 @@
 @rota = http://localhost:8080
+@token = SEU_TOKEN_AQUI
 
-###
+################################################################################
+# 🔐 AUTENTICAÇÃO
+################################################################################
+
+### Registrar novo usuário
 POST {{rota}}/auth/register
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "johnw@gmail.com",
+    "firstname": "Maria",
+    "lastname": "Silva",
+    "email": "maria.silva@gmail.com",
     "password": "password123",
-    "age": 25,
-    "gender":"MALE"
+    "gender": "FEMALE",
+    "dob": "1995-08-20",
+    "preference": "MALE"
 }
-###
+
+### Login (copie o token da resposta e cole na variável @token acima)
 POST {{rota}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "johnw@gmail.com",
+    "email": "juliana@example.com",
     "password": "password123"
 }
 
-# User 
+################################################################################
+# 👤 DESCOBERTA DE USUÁRIOS
+################################################################################
 
-###
-GET {{rota}}/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE1ZjVlN2IzLTgyN2MtNGRhMC05MzAxLTZiNGRlYmYzOGNlNCIsImVtYWlsIjoiam9obndAZ21haWwuY29tIiwiaWF0IjoxNzYxNTgyNjk2LCJleHAiOjE3NjE1ODYyOTZ9.bL8V48m6vqF14KsBhiVojUhjBRSeEyl8lv5I9-D9p-U
-content-type: application/json
+### Descobrir novos usuários (estilo Tinder - 10 por vez)
+GET {{rota}}/users/discover
+Authorization: Bearer {{token}}
+
+### Ver todos os matches do usuário
+GET {{rota}}/users/matches
+Authorization: Bearer {{token}}
+
+################################################################################
+# 💘 SISTEMA DE LIKES
+################################################################################
+
+### Dar like em um usuário (substitua USER_ID pelo ID do usuário)
+# Se houver match mútuo, retorna "It's a match! 🎉"
+POST {{rota}}/likes/USER_ID
+Authorization: Bearer {{token}}
+
+### Dar dislike (skip) em um usuário
+POST {{rota}}/likes/USER_ID/dislike
+Authorization: Bearer {{token}}
+
+### Ver likes que você enviou
+GET {{rota}}/likes/sent
+Authorization: Bearer {{token}}
+
+### Ver quem curtiu você
+GET {{rota}}/likes/received
+Authorization: Bearer {{token}}
+
+################################################################################
+# 💬 MENSAGENS
+################################################################################
+
+### Enviar mensagem em um match (substitua MATCH_ID pelo ID do match)
+POST {{rota}}/matches/MATCH_ID/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "content": "Oi! Tudo bem? 😊"
+}
+
+### Ver mensagens de um match
+GET {{rota}}/matches/MATCH_ID/messages
+Authorization: Bearer {{token}}
+
+################################################################################
+# 📝 EXEMPLOS PRÁTICOS COM DADOS DA SEED
+################################################################################
+
+### Exemplo 1: Login como João
+POST {{rota}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "joao@gmail.com",
+    "password": "password123"
+}
+
+### Exemplo 2: Descobrir usuários (após login como João)
+GET {{rota}}/users/discover
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+
+### Exemplo 3: João dá like na Maria (substitua pelo ID real da Maria)
+# Use o ID que apareceu no /discover
+POST {{rota}}/likes/05f1e337-e88c-45eb-9cae-7c62ff9df098
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+
+
+### Exemplo 4: Ver matches do João
+GET {{rota}}/users/matches
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+
+
+### Exemplo 5: João envia mensagem no match (substitua pelo ID real do match)
+POST {{rota}}/matches/3/messages
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+Content-Type: application/json
+
+{
+    "content": "Oi Maria!dqwdqwComo vai? 😊"
+}
+
+### Exemplo 6: Ver conversa do match
+GET {{rota}}/matches/3/messages
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+
+################################################################################
+# 🧪 FLUXO COMPLETO DE TESTE
+################################################################################
+
+# 1. Faça login com um usuário da seed
+# 2. Copie o token e cole na variável @token no topo do arquivo
+# 3. Use GET /users/discover para ver usuários disponíveis
+# 4. Copie o ID de um usuário e dê like com POST /likes/{userId}
+# 5. Se houver match, use GET /users/matches para ver
+# 6. Envie mensagens com POST /matches/{matchId}/messages
+# 7. Veja a conversa com GET /matches/{matchId}/messages
+
+################################################################################
+# 👥 USUÁRIOS DISPONÍVEIS NA SEED (todos com senha: password123)
+################################################################################
+
+# - joao@gmail.com (João Silva, MALE, busca FEMALE)
+# - maria@gmail.com (Maria Santos, FEMALE, busca MALE)
+# - pedro@gmail.com (Pedro Oliveira, MALE, busca FEMALE)
+# - ana@gmail.com (Ana Costa, FEMALE, busca MALE)
+# - carlos@gmail.com (Carlos Souza, MALE, busca FEMALE)
+# - juliana@gmail.com (Juliana Lima, FEMALE, busca MALE)

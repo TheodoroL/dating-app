@@ -1,6 +1,11 @@
 import { Router } from "express";
-import { getAllUsers } from "../controllers/user.controller.js";
+import { getDiscoverUsers, getMatches } from "../controllers/user.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+
 export const userRouter = Router();
 
-userRouter.get("/", authMiddleware, getAllUsers);
+// GET /users - Descobrir novos usuários (estilo Tinder)
+userRouter.get("/discover", authMiddleware, getDiscoverUsers);
+
+// GET /users/matches - Ver seus matches
+userRouter.get("/matches", authMiddleware, getMatches);

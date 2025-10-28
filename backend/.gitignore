@@ -13,7 +13,7 @@ lib/
 .env
 .env.*
 !.env.example
-
+/uploads/*
 # Prisma
 # Keep migrations in source control; ignore generated client artifacts and caches
 node_modules/.prisma/

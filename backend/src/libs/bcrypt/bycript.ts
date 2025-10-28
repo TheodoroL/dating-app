@@ -5,7 +5,10 @@ export async function hashPassword(password: string) {
   return hashedPassword;
 }
 
-export async function comparePassword(password: string, hashedPassword: string) {
+export async function comparePassword(
+  password: string,
+  hashedPassword: string,
+) {
   const isValid = await compare(password, hashedPassword);
   return isValid;
 }
