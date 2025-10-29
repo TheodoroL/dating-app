@@ -1,21 +1,11 @@
 import type { Request, Response } from "express";
 import { prisma } from "../libs/database/prisma.js";
 
-// POST /likes/:userId - Dar like em um usuário
 export async function likeUser(req: Request, res: Response) {
   try {
     const currentUserId = req.user?.id;
     const { userId: targetUserId } = req.params;
 
-    if (!currentUserId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    if (currentUserId === targetUserId) {
-      return res.status(400).json({ message: "You cannot like yourself" });
-    }
-
-    // Verificar se o usuário alvo existe
     const targetUser = await prisma.user.findUnique({
       where: { id: targetUserId }
     });
@@ -24,7 +14,6 @@ export async function likeUser(req: Request, res: Response) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Verificar se já curtiu antes
     const existingLike = await prisma.like.findFirst({
       where: {
         fromUserId: currentUserId,
@@ -36,7 +25,6 @@ export async function likeUser(req: Request, res: Response) {
       return res.status(409).json({ message: "You already liked this user" });
     }
 
-    // Criar o like
     await prisma.like.create({
       data: {
         fromUserId: currentUserId,
@@ -44,20 +32,17 @@ export async function likeUser(req: Request, res: Response) {
       }
     });
 
-    // 🔍 VERIFICAR SE HOUVE MATCH
-    // Checa se o outro usuário também curtiu você (like mútuo)
     const mutualLike = await prisma.like.findFirst({
       where: {
         fromUserId: targetUserId,
-        toUserId: currentUserId
+        toUserId: currentUserId,
+        isLike: true // Só considera match se for like, não dislike
       }
     });
 
     let match = null;
 
-    // 💘 SE AMBOS CURTIRAM, CRIA O MATCH!
     if (mutualLike) {
-      // Verificar se o match já não existe (para evitar duplicatas)
       const existingMatch = await prisma.match.findFirst({
         where: {
           OR: [
@@ -99,18 +84,29 @@ export async function likeUser(req: Request, res: Response) {
   }
 }
 
-// POST /likes/:userId/dislike - Dar dislike (skip)
 export async function dislikeUser(req: Request, res: Response) {
   try {
     const currentUserId = req.user?.id;
+    const { userId: targetUserId } = req.params;
 
-    if (!currentUserId) {
-      return res.status(401).json({ message: "Unauthorized" });
+    const existingInteraction = await prisma.like.findFirst({
+      where: {
+        fromUserId: currentUserId,
+        toUserId: targetUserId
+      }
+    });
+
+    if (existingInteraction) {
+      return res.status(409).json({ message: "You already interacted with this user" });
     }
 
-    // No Tinder, dislike apenas não mostra mais o usuário
-    // Você pode implementar uma tabela separada de "dislikes" se quiser
-    // Por enquanto, apenas retornamos sucesso (o usuário não aparece mais porque não está nos "likes")
+    await prisma.like.create({
+      data: {
+        fromUserId: currentUserId,
+        toUserId: targetUserId,
+        isLike: false
+      }
+    });
 
     res.status(200).json({
       message: "User skipped successfully"
@@ -121,21 +117,18 @@ export async function dislikeUser(req: Request, res: Response) {
   }
 }
 
-// GET /likes/sent - Ver likes que você enviou
 export async function getSentLikes(req: Request, res: Response) {
   try {
     const userId = req.user?.id;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const likes = await prisma.like.findMany({
-      where: { fromUserId: userId },
+      where: {
+        fromUserId: userId,
+        isLike: true
+      },
       orderBy: { createdAt: "desc" }
     });
 
-    // Buscar detalhes dos usuários manualmente
     const userIds = likes.map(like => like.toUserId);
     const users = await prisma.user.findMany({
       where: { id: { in: userIds } },
@@ -170,21 +163,18 @@ export async function getSentLikes(req: Request, res: Response) {
   }
 }
 
-// GET /likes/received - Ver quem curtiu você
 export async function getReceivedLikes(req: Request, res: Response) {
   try {
     const userId = req.user?.id;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
     const likes = await prisma.like.findMany({
-      where: { toUserId: userId },
+      where: {
+        toUserId: userId,
+        isLike: true // Apenas likes, não dislikes
+      },
       orderBy: { createdAt: "desc" }
     });
 
-    // Buscar detalhes dos usuários manualmente
     const userIds = likes.map(like => like.fromUserId);
     const users = await prisma.user.findMany({
       where: { id: { in: userIds } },

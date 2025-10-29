@@ -116,24 +116,26 @@ async function main() {
 
   console.log("📷 Fotos criadas");
 
-  // Criar likes
-  // João (0) curte Maria (1) e Ana (3)
+  // Criar likes e dislikes
+  // João (0) curte Maria (1) e Ana (3), descurte Juliana (5)
   // Maria (1) curte João (0) <- MATCH!
-  // Pedro (2) curte Ana (3)
+  // Pedro (2) curte Ana (3), descurte Maria (1)
   // Ana (3) curte Pedro (2) <- MATCH!
   await prisma.like.createMany({
     data: [
-      { fromUserId: users[0].id, toUserId: users[1].id },
-      { fromUserId: users[0].id, toUserId: users[3].id },
-      { fromUserId: users[1].id, toUserId: users[0].id },
-      { fromUserId: users[2].id, toUserId: users[3].id },
-      { fromUserId: users[3].id, toUserId: users[2].id },
-      { fromUserId: users[4].id, toUserId: users[1].id },
-      { fromUserId: users[5].id, toUserId: users[2].id }
+      { fromUserId: users[0].id, toUserId: users[1].id, isLike: true },
+      { fromUserId: users[0].id, toUserId: users[3].id, isLike: true },
+      { fromUserId: users[0].id, toUserId: users[5].id, isLike: false }, // João descurtiu Juliana
+      { fromUserId: users[1].id, toUserId: users[0].id, isLike: true },
+      { fromUserId: users[2].id, toUserId: users[3].id, isLike: true },
+      { fromUserId: users[2].id, toUserId: users[1].id, isLike: false }, // Pedro descurtiu Maria
+      { fromUserId: users[3].id, toUserId: users[2].id, isLike: true },
+      { fromUserId: users[4].id, toUserId: users[1].id, isLike: true },
+      { fromUserId: users[5].id, toUserId: users[2].id, isLike: true }
     ]
   });
 
-  console.log("❤️  Likes criados");
+  console.log("❤️  Likes e dislikes criados");
 
   // Criar matches (likes mútuos)
   const matches = await Promise.all([
@@ -192,7 +194,7 @@ async function main() {
   console.log("\n📊 Resumo:");
   console.log(`   - ${users.length} usuários`);
   console.log(`   - 4 fotos`);
-  console.log(`   - 7 likes`);
+  console.log(`   - 7 likes + 2 dislikes`);
   console.log(`   - ${matches.length} matches`);
   console.log(`   - 5 mensagens`);
   console.log("\n🔑 Todos os usuários têm a senha: password123");

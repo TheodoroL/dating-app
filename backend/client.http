@@ -1,5 +1,5 @@
 @rota = http://localhost:8080
-@token = SEU_TOKEN_AQUI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZDVkMzViLWRmMzgtNDMyOS04ZWE2LTY2ZmRhNjk1YzU0NiIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTc0OTkzOSwiZXhwIjoxNzYxODM2MzM5fQ.N9iXo6IKbxKMMhsv8Q6IY6TiZP7fHlWONVD8ihSfMB8
 
 ################################################################################
 # 🔐 AUTENTICAÇÃO
@@ -10,13 +10,13 @@ POST {{rota}}/auth/register
 Content-Type: application/json
 
 {
-    "firstname": "Maria",
+   "firstname": "João",
     "lastname": "Silva",
-    "email": "maria.silva@gmail.com",
+    "email": "joaosilva@gmail.com",
     "password": "password123",
-    "gender": "FEMALE",
-    "dob": "1995-08-20",
-    "preference": "MALE"
+    "gender":"MALE",
+    "dob": "1990-05-15",
+    "preference": "FEMALE"
 }
 
 ### Login (copie o token da resposta e cole na variável @token acima)
@@ -46,11 +46,11 @@ Authorization: Bearer {{token}}
 
 ### Dar like em um usuário (substitua USER_ID pelo ID do usuário)
 # Se houver match mútuo, retorna "It's a match! 🎉"
-POST {{rota}}/likes/USER_ID
+POST {{rota}}/likes/e57fd61a-ef27-4846-ac60-ae910f2bc8a8
 Authorization: Bearer {{token}}
 
 ### Dar dislike (skip) em um usuário
-POST {{rota}}/likes/USER_ID/dislike
+POST {{rota}}/likes/bf986229-0772-4ab6-a635-8b2cbe2da784/dislike
 Authorization: Bearer {{token}}
 
 ### Ver likes que você enviou
@@ -66,7 +66,7 @@ Authorization: Bearer {{token}}
 ################################################################################
 
 ### Enviar mensagem em um match (substitua MATCH_ID pelo ID do match)
-POST {{rota}}/matches/MATCH_ID/messages
+POST {{rota}}/matches/6/messages
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -75,49 +75,49 @@ Content-Type: application/json
 }
 
 ### Ver mensagens de um match
-GET {{rota}}/matches/MATCH_ID/messages
+GET {{rota}}/matches/6/messages
 Authorization: Bearer {{token}}
 
 ################################################################################
 # 📝 EXEMPLOS PRÁTICOS COM DADOS DA SEED
 ################################################################################
-
+@token02= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1N2ZkNjFhLWVmMjctNDg0Ni1hYzYwLWFlOTEwZjJiYzhhOCIsImVtYWlsIjoiam9hb3NpbHZhQGdtYWlsLmNvbSIsImlhdCI6MTc2MTc1MDMxMCwiZXhwIjoxNzYxODM2NzEwfQ.ww3FvBIhlzK-YqmQiy5aZRR5kAVwHAXzG88fND1y2-I
 ### Exemplo 1: Login como João
 POST {{rota}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "joao@gmail.com",
+    "email": "joaosilva@gmail.com",
     "password": "password123"
 }
 
 ### Exemplo 2: Descobrir usuários (após login como João)
 GET {{rota}}/users/discover
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+Authorization: Bearer {{token02}}
 
 ### Exemplo 3: João dá like na Maria (substitua pelo ID real da Maria)
 # Use o ID que apareceu no /discover
-POST {{rota}}/likes/05f1e337-e88c-45eb-9cae-7c62ff9df098
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+POST {{rota}}/likes/6ad5d35b-df38-4329-8ea6-66fda695c546
+Authorization: Bearer {{token02}}
 
 
 ### Exemplo 4: Ver matches do João
 GET {{rota}}/users/matches
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+Authorization: Bearer {{token02}}
 
 
 ### Exemplo 5: João envia mensagem no match (substitua pelo ID real do match)
-POST {{rota}}/matches/3/messages
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+POST {{rota}}/matches/6/messages
+Authorization: Bearer {{token02}}
 Content-Type: application/json
 
 {
-    "content": "Oi Maria!dqwdqwComo vai? 😊"
+    "content": "Oi, como você está? 😊"
 }
 
 ### Exemplo 6: Ver conversa do match
-GET {{rota}}/matches/3/messages
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1ODRjMDdlLWNmNWUtNDI1NS1iY2Q1LTE1ZDFmMjUzNjE3YyIsImVtYWlsIjoianVsaWFuYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTY4OTU3OCwiZXhwIjoxNzYxNzc1OTc4fQ.mmw_1d0qCyftsqxED25JCGBd44_fOrxWD0xWnsy5pCY
+GET {{rota}}/matches/6/messages
+Authorization: Bearer {{token02}}
 
 ################################################################################
 # 🧪 FLUXO COMPLETO DE TESTE

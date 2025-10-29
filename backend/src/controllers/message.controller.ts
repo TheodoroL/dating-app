@@ -2,18 +2,12 @@ import type { Request, Response } from "express";
 import { prisma } from "../libs/database/prisma.js";
 import type { Message } from "../libs/schema/message.js";
 
-// POST /matches/:matchId/messages - Enviar mensagem em um match
 export async function sendMessage(req: Request<{ matchId: string }, unknown, Message>, res: Response) {
   try {
     const currentUserId = req.user?.id;
     const { matchId } = req.params;
     const { content } = req.body;
 
-    if (!currentUserId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    // Verificar se o match existe e se o usuário faz parte dele
     const match = await prisma.match.findUnique({
       where: { id: Number(matchId) }
     });
@@ -26,7 +20,6 @@ export async function sendMessage(req: Request<{ matchId: string }, unknown, Mes
       return res.status(403).json({ message: "You are not part of this match" });
     }
 
-    // Criar a mensagem
     const message = await prisma.message.create({
       data: {
         senderId: currentUserId,
@@ -55,11 +48,6 @@ export async function getMessages(req: Request, res: Response) {
     const currentUserId = req.user?.id;
     const { matchId } = req.params;
 
-    if (!currentUserId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    // Verificar se o match existe e se o usuário faz parte dele
     const match = await prisma.match.findUnique({
       where: { id: Number(matchId) }
     });
@@ -72,13 +60,11 @@ export async function getMessages(req: Request, res: Response) {
       return res.status(403).json({ message: "You are not part of this match" });
     }
 
-    // Buscar as mensagens
     const messages = await prisma.message.findMany({
       where: { matchId: Number(matchId) },
       orderBy: { createdAt: "asc" }
     });
 
-    // Buscar informações dos usuários
     const senderIds = [...new Set(messages.map(msg => msg.senderId))];
     const users = await prisma.user.findMany({
       where: { id: { in: senderIds } },

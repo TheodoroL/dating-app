@@ -16,7 +16,6 @@ export async function createUser(req: Request<unknown, Record<string, never>, Us
 
     const hashPasword = await hashPassword(password);
 
-    // Criar o usuário primeiro
     const newUser = await prisma.user.create({
       data: {
         firstname,

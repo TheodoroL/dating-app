@@ -33,20 +33,20 @@ export async function getDiscoverUsers(req: Request, res: Response) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Buscar IDs de usuários que você já curtiu (para não mostrar novamente)
-    const alreadyLiked = await prisma.like.findMany({
+    // Buscar IDs de usuários que você já interagiu (curtiu OU descurtiu)
+    const alreadyInteracted = await prisma.like.findMany({
       where: { fromUserId: userId },
       select: { toUserId: true }
     });
 
-    const likedUserIds = alreadyLiked.map(like => like.toUserId);
+    const interactedUserIds = alreadyInteracted.map(interaction => interaction.toUserId);
 
     // Buscar usuários para mostrar
     const users = await prisma.user.findMany({
       where: {
         id: {
           not: userId, // Não mostrar você mesmo
-          notIn: likedUserIds // Não mostrar quem você já curtiu
+          notIn: interactedUserIds // Não mostrar quem você já curtiu/descurtiu
         },
         gender: currentUser.preference // Filtrar por preferência
       },

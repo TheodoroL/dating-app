@@ -32,17 +32,20 @@ model Photo {
 }
 
 // Tabela de likes: registra quando um usuário curte outro
-// Se user A curte user B → cria registro (fromUserId: A, toUserId: B)
-// Se user B também curte user A → cria registro (fromUserId: B, toUserId: A)
-// Quando ambos os registros existem = MATCH automático!
+// Se user A curte user B → cria registro (fromUserId: A, toUserId: B, isLike: true)
+// Se user A descurte user B → cria registro (fromUserId: A, toUserId: B, isLike: false)
+// Se user B também curte user A → cria registro (fromUserId: B, toUserId: A, isLike: true)
+// Quando ambos os registros existem com isLike=true = MATCH automático!
 model Like {
   id         Int      @id @default(autoincrement())
-  fromUserId String   // Quem deu o like (você)
-  toUserId   String   // Quem recebeu o like (pessoa que você curtiu)
+  fromUserId String   // Quem deu o like/dislike (você)
+  toUserId   String   // Quem recebeu o like/dislike (pessoa que você curtiu/descurtiu)
+  isLike     Boolean  @default(true) // true = like, false = dislike
   createdAt  DateTime @default(now())
 
-  @@unique([fromUserId, toUserId]) // Evita que você curta a mesma pessoa 2x
+  @@unique([fromUserId, toUserId]) // Evita que você curta/descurta a mesma pessoa 2x
   @@index([toUserId]) // Otimiza busca de "quem me curtiu"
+  @@index([fromUserId, isLike]) // Otimiza busca de descoberta (excluir já vistos)
 }
 
 // Match: criado quando dois usuários deram like um no outro
