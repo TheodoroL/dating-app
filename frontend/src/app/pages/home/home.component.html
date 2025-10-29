@@ -1,0 +1,73 @@
+<div class="home-root">
+    <!-- Header -->
+    <header class="header">
+        <h2 class="header-title">Home Swipe</h2>
+        <div class="header-icons">
+            <button class="icon-button">
+                <span class="icon">🔍</span>
+            </button>
+            <button class="icon-button">
+                <span class="icon">🔔</span>
+            </button>
+            <button class="icon-button">
+                <span class="icon">⚙️</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Add Story Button -->
+    <div class="story-add">
+        <button class="add-story-btn">
+            <span class="plus-icon">+</span>
+            Add Story
+        </button>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+        <button class="lock-icon">
+            <span>🔒</span>
+        </button>
+
+        <div class="card-content">
+            <div class="profile-info">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <h3 class="user-name">Anna Mcconaughey</h3>
+                    <p class="user-age">15 km away</p>
+                </div>
+            </div>
+
+            <!-- Pagination dots -->
+            <div class="pagination-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <button class="chat-icon">
+            <span>💬</span>
+        </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-btn rewind">
+            <span class="icon">↶</span>
+        </button>
+        <button class="action-btn dislike">
+            <span class="icon">✕</span>
+        </button>
+        <button class="action-btn like">
+            <span class="icon">❤️</span>
+        </button>
+    </div>
+
+    <!-- Size Indicator -->
+
+    <!-- Bottom Navigation -->
+    <app-bottom-nav [activeItem]="'home'"></app-bottom-nav>
+</div>

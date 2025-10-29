@@ -1,0 +1,281 @@
+.home-root {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #4a5f8f 0%, #2d1b4e 50%, #1a0033 100%);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 4vw, 24px);
+  padding-bottom: clamp(80px, 20vw, 100px);
+  box-sizing: border-box;
+  position: relative;
+}
+
+// Header
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(16px, 4vh, 24px);
+
+  .header-title {
+    color: white;
+    font-size: clamp(16px, 4vw, 20px);
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .header-icons {
+    display: flex;
+    gap: clamp(8px, 2vw, 12px);
+
+    .icon-button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: clamp(18px, 4.5vw, 22px);
+      cursor: pointer;
+      padding: 8px;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// Add Story Button
+.story-add {
+  margin-bottom: clamp(16px, 4vh, 24px);
+
+  .add-story-btn {
+    background: linear-gradient(135deg, #DD3562 0%, #8354FF 100%);
+    border: none;
+    border-radius: clamp(20px, 4vw, 24px);
+    padding: clamp(10px, 2.5vw, 14px) clamp(16px, 4vw, 24px);
+    color: white;
+    font-size: clamp(13px, 3.5vw, 15px);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(221, 53, 98, 0.4);
+
+    .plus-icon {
+      font-size: clamp(16px, 4vw, 20px);
+      font-weight: bold;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(221, 53, 98, 0.6);
+    }
+  }
+}
+
+// Profile Card
+.profile-card {
+  background: #21154C;
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #8354FF, #DD3562) 1;
+  border-radius: clamp(20px, 5vw, 32px);
+  padding: clamp(20px, 5vw, 30px);
+  position: relative;
+  margin-bottom: clamp(20px, 5vh, 30px);
+  min-height: clamp(300px, 50vh, 400px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .lock-icon {
+    position: absolute;
+    top: clamp(12px, 3vw, 16px);
+    right: clamp(12px, 3vw, 16px);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: clamp(32px, 8vw, 40px);
+    height: clamp(32px, 8vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: clamp(14px, 3.5vw, 18px);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 3vw, 16px);
+    margin-bottom: clamp(12px, 3vh, 16px);
+
+    .avatar {
+      width: clamp(50px, 12vw, 70px);
+      height: clamp(50px, 12vw, 70px);
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8354FF, #DD3562);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .user-info {
+      flex: 1;
+
+      .user-name {
+        color: white;
+        font-size: clamp(16px, 4vw, 20px);
+        font-weight: 600;
+        margin: 0 0 clamp(4px, 1vh, 6px) 0;
+        letter-spacing: 0.5px;
+      }
+
+      .user-age {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: clamp(12px, 3vw, 14px);
+        margin: 0;
+      }
+    }
+  }
+
+  .pagination-dots {
+    display: flex;
+    gap: 6px;
+    margin-bottom: clamp(8px, 2vh, 12px);
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+
+      &.active {
+        background: white;
+        width: 12px;
+      }
+    }
+  }
+
+  .chat-icon {
+    position: absolute;
+    bottom: clamp(12px, 3vw, 16px);
+    right: clamp(12px, 3vw, 16px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: clamp(40px, 10vw, 50px);
+    height: clamp(40px, 10vw, 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: clamp(18px, 4.5vw, 22px);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(16px, 4vw, 24px);
+  margin-bottom: clamp(16px, 4vh, 24px);
+
+  .action-btn {
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: clamp(18px, 4.5vw, 24px);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &.rewind {
+      width: clamp(45px, 11vw, 55px);
+      height: clamp(45px, 11vw, 55px);
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    }
+
+    &.dislike {
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      background: linear-gradient(135deg, #FF9800, #F57C00);
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+    }
+
+    &.like {
+      width: clamp(50px, 12vw, 60px);
+      height: clamp(50px, 12vw, 60px);
+      background: linear-gradient(135deg, #E91E63, #C2185B);
+      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .home-root {
+    padding: 12px;
+  }
+
+  .profile-card {
+    min-height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    margin-bottom: 12px;
+  }
+
+  .action-buttons {
+    gap: 12px;
+  }
+}
+
+// Animações
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.action-buttons {
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}

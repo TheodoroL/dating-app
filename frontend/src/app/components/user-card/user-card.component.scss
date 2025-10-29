@@ -1,0 +1,88 @@
+.user-card {
+  background: #21154C;
+  border: 1px solid rgba(131, 84, 255, 0.3);
+  border-radius: clamp(16px, 4vw, 20px);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(131, 84, 255, 0.6);
+    box-shadow: 0 8px 20px rgba(131, 84, 255, 0.3);
+  }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, rgba(131, 84, 255, 0.2), rgba(221, 53, 98, 0.2));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .online-indicator {
+      position: absolute;
+      top: clamp(8px, 2vw, 12px);
+      right: clamp(8px, 2vw, 12px);
+      width: clamp(10px, 2.5vw, 14px);
+      height: clamp(10px, 2.5vw, 14px);
+      background: #4CAF50;
+      border-radius: 50%;
+      border: 2px solid #21154C;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+    }
+  }
+
+  .card-info {
+    padding: clamp(10px, 2.5vw, 14px);
+
+    .user-name {
+      color: white;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 600;
+      margin: 0 0 clamp(6px, 1.5vw, 8px) 0;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-details {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 2.5vw, 14px);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: clamp(11px, 2.8vw, 13px);
+
+      .distance,
+      .photo-count {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .icon {
+          font-size: clamp(10px, 2.5vw, 12px);
+        }
+      }
+    }
+  }
+}
+
+// Animação
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.user-card {
+  animation: fadeIn 0.4s ease-out;
+}

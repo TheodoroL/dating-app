@@ -1,0 +1,38 @@
+<div class="messages-root">
+    <!-- Header -->
+    <header class="header">
+        <button class="back-button">
+            <span class="icon">←</span>
+        </button>
+        <h2 class="header-title">Dating Matches</h2>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="subtitle">Check out lists of matches & keep swiping</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active">All</button>
+        <button class="tab">You Liked</button>
+        <button class="tab">Liked You</button>
+        <button class="tab">Views</button>
+    </div>
+
+    <!-- Matches List -->
+    <div class="matches-list">
+        <div class="match-item" *ngFor="let match of matches">
+            <div class="avatar"></div>
+            <div class="match-info">
+                <h3 class="match-name">{{ match.name }}</h3>
+                <p class="match-message">{{ match.message }}</p>
+                <p class="match-time">{{ match.time }} | {{ match.date }}</p>
+            </div>
+            <button class="menu-button">
+                <span>⋮</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <app-bottom-nav [activeItem]="'messages'"></app-bottom-nav>
+</div>

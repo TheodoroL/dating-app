@@ -1,0 +1,34 @@
+<div class="user-list-root">
+    <!-- Header -->
+    <header class="header">
+        <h2 class="header-title">Add Your Story</h2>
+        <div class="header-icons">
+            <button class="icon-button">
+                <span class="icon">🔍</span>
+            </button>
+            <button class="icon-button">
+                <span class="icon">🔔</span>
+            </button>
+            <button class="icon-button">
+                <span class="icon">⚙️</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">All</button>
+        <button class="tab" [class.active]="activeTab === 'online'" (click)="activeTab = 'online'">Online</button>
+        <button class="tab" [class.active]="activeTab === 'new'" (click)="activeTab = 'new'">New Daters</button>
+        <button class="tab" [class.active]="activeTab === 'liked'" (click)="activeTab = 'liked'">Liked You</button>
+    </div>
+
+    <!-- User Grid -->
+    <div class="user-grid">
+        <app-user-card *ngFor="let user of filteredUsers" [user]="user" (click)="onUserClick(user)">
+        </app-user-card>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <app-bottom-nav [activeItem]="'discover'"></app-bottom-nav>
+</div>
