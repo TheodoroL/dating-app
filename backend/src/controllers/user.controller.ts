@@ -19,6 +19,8 @@ function calculateAge(birthDate: Date): number {
 export async function getDiscoverUsers(req: Request, res: Response) {
   try {
     const userId = req.user?.id;
+    console.log('🔍 getDiscoverUsers - userId:', userId);
+    
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -28,6 +30,8 @@ export async function getDiscoverUsers(req: Request, res: Response) {
       where: { id: userId },
       select: { preference: true }
     });
+    
+    console.log('👤 Usuário atual - preferência:', currentUser?.preference);
 
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
@@ -76,6 +80,9 @@ export async function getDiscoverUsers(req: Request, res: Response) {
       photos: user.photos,
       profilePhoto: user.photos.find(p => p.profilePhoto)?.url || user.photos[0]?.url
     }));
+
+    console.log('📤 Retornando', formattedUsers.length, 'usuários');
+    console.log('👥 Usuários:', formattedUsers.map(u => `${u.firstname} ${u.lastname} (${u.gender})`));
 
     res.status(200).json({
       users: formattedUsers,
@@ -153,6 +160,57 @@ export async function getMatches(req: Request, res: Response) {
     });
   } catch (error) {
     console.error("Error fetching matches:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// GET /users/me - Buscar informações do usuário logado
+export async function getCurrentUser(req: Request, res: Response) {
+  try {
+    const userId = req.user?.id;
+    
+   
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        email: true,
+        gender: true,
+        preference: true,
+        dob: true,
+        createdAt: true,
+        photos: {
+          select: {
+            id: true,
+            url: true,
+            profilePhoto: true
+          }
+        }
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        gender: user.gender,
+        preference: user.preference,
+        age: calculateAge(user.dob),
+        memberSince: user.createdAt,
+        photos: user.photos,
+        profilePhoto: user.photos.find(p => p.profilePhoto)?.url || user.photos[0]?.url || null
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching current user:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }

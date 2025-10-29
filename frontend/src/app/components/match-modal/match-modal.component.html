@@ -1,0 +1,49 @@
+<div class="modal-overlay" (click)="onClose()" *ngIf="isVisible">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <!-- Decorative Elements -->
+        <div class="decoration-container">
+            <!-- Orbs animados -->
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="orb orb-4"></div>
+            <div class="orb orb-5"></div>
+
+            <!-- Circles with curved lines -->
+            <div class="curved-line line-1"></div>
+            <div class="curved-line line-2"></div>
+            <div class="curved-line line-3"></div>
+
+            <!-- Profile Circles -->
+            <div class="profile-circles">
+                <div class="profile-circle left-profile">
+                    <div class="profile-avatar"></div>
+                </div>
+                <div class="profile-circle right-profile">
+                    <div class="profile-avatar"></div>
+                </div>
+                <div class="heart-icon">
+                    <span>✓</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="text-content">
+            <h2 class="title">Parabéns!</h2>
+            <p class="match-text">É um Match!</p>
+            <p class="subtitle">{{ userName }} e você curtiram um ao outro</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn-secondary" (click)="onKeepDating()">
+                <span class="icon">💬</span>
+                Iniciar Conversa
+            </button>
+            <button class="btn-primary" (click)="onClose()">
+                Continuar Explorando
+            </button>
+        </div>
+    </div>
+</div>

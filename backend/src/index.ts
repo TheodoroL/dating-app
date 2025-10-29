@@ -10,11 +10,28 @@ import { userRouter } from "./router/user.route.js";
 
 const app = express();
 
-app.use(helmet());
-app.use(cors({ origin: "*" }));
+// Configurar helmet com permissões para imagens
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: false
+}));
+
+app.use(cors({ 
+  origin: "*",
+  exposedHeaders: ["Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static(path.join(import.meta.dirname, "../uploads")));
+
+// Servir arquivos estáticos com headers CORS apropriados
+app.use("/uploads", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+}, express.static(path.join(import.meta.dirname, "../uploads")));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/likes", likeRouter);

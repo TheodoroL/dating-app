@@ -1,7 +1,7 @@
 <div class="home-root">
     <!-- Header -->
     <header class="header">
-        <h2 class="header-title">Home Swipe</h2>
+        <h2 class="header-title">Descubra</h2>
         <div class="header-icons">
             <button class="icon-button">
                 <span class="icon">🔍</span>
@@ -16,35 +16,41 @@
     </header>
 
     <!-- Add Story Button -->
-    <div class="story-add">
+    <!-- <div class="story-add">
         <button class="add-story-btn">
             <span class="plus-icon">+</span>
-            Add Story
+            Adicionar História
         </button>
-    </div>
+    </div> -->
 
     <!-- Profile Card -->
-    <div class="profile-card">
+    <div class="profile-card" *ngIf="currentProfile; else noUsers">
         <button class="lock-icon">
             <span>🔒</span>
         </button>
 
-        <div class="card-content">
+        <div class="card-content"
+            [style.backgroundImage]="hasProfilePhoto() ? 'url(' + getProfilePhoto() + ')' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'"
+            [class.no-photo]="!hasProfilePhoto()">
             <div class="profile-info">
-                <div class="avatar"></div>
                 <div class="user-info">
-                    <h3 class="user-name">Anna Mcconaughey</h3>
-                    <p class="user-age">15 km away</p>
+                    <div class="user-avatar" *ngIf="!hasProfilePhoto()">
+                        <span class="initials">{{ currentProfile.firstname[0] }}{{ currentProfile.lastname[0] }}</span>
+                    </div>
+                    <h3 class="user-name">{{ currentProfile.firstname }} {{ currentProfile.lastname }}, {{
+                        currentProfile.age }}</h3>
+                    <p class="user-details">
+                        <span class="gender-badge">{{ getGenderIcon() }}</span>
+                        {{ currentProfile.gender }}
+                    </p>
                 </div>
             </div>
 
             <!-- Pagination dots -->
-            <div class="pagination-dots">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+            <div class="pagination-dots" *ngIf="currentProfile.photos && currentProfile.photos.length > 1">
+                <span class="dot" *ngFor="let photo of currentProfile.photos; let i = index"
+                    [class.active]="i === currentPhotoIndex" (click)="changePhoto(i)">
+                </span>
             </div>
         </div>
 
@@ -53,21 +59,40 @@
         </button>
     </div>
 
+    <ng-template #noUsers>
+        <div class="no-users-card">
+            <div class="empty-state">
+                <span class="empty-icon">😔</span>
+                <h3>Nenhum perfil disponível</h3>
+                <p>Volte mais tarde para ver novos perfis!</p>
+                <button class="reload-btn" (click)="loadUsers()">Recarregar</button>
+            </div>
+        </div>
+    </ng-template>
+
     <!-- Action Buttons -->
     <div class="action-buttons">
-        <button class="action-btn rewind">
+        <button class="action-btn rewind" [disabled]="currentIndex === 0" (click)="previousProfile()">
             <span class="icon">↶</span>
         </button>
-        <button class="action-btn dislike">
+        <button class="action-btn dislike" [disabled]="!currentProfile || isLoading" (click)="onDislike()">
             <span class="icon">✕</span>
         </button>
-        <button class="action-btn like">
+        <button class="action-btn like" [disabled]="!currentProfile || isLoading" (click)="onLike()">
             <span class="icon">❤️</span>
         </button>
     </div>
 
-    <!-- Size Indicator -->
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Carregando perfis...</p>
+    </div>
 
     <!-- Bottom Navigation -->
     <app-bottom-nav [activeItem]="'home'"></app-bottom-nav>
+
+    <!-- Match Modal -->
+    <app-match-modal [isVisible]="showMatchModal" [userName]="matchedUserName" (closed)="onModalClosed()">
+    </app-match-modal>
 </div>

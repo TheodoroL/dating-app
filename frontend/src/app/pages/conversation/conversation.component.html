@@ -1,0 +1,58 @@
+<div class="conversation-root">
+    <!-- Header -->
+    <header class="header">
+        <button class="back-button" (click)="goBack()">
+            <span class="icon">←</span>
+        </button>
+        <div class="user-info">
+            <div class="avatar"></div>
+            <div class="user-details">
+                <h3 class="user-name">{{ otherUser?.firstname }} {{ otherUser?.lastname }}</h3>
+                <p class="user-status">Conectado</p>
+            </div>
+        </div>
+        <button class="menu-button">
+            <span class="icon">⋮</span>
+        </button>
+    </header>
+
+    <!-- Messages Container -->
+    <div class="messages-container" #messagesContainer>
+        <!-- Loading -->
+        <div class="loading" *ngIf="isLoading && messages.length === 0">
+            <div class="spinner"></div>
+            <p>Carregando conversa...</p>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages-list" *ngIf="!isLoading || messages.length > 0">
+            <div *ngFor="let message of messages" class="message-wrapper" [class.my-message]="isMyMessage(message)"
+                [class.other-message]="!isMyMessage(message)">
+                <div class="message-bubble">
+                    <p class="message-text">{{ message.content }}</p>
+                    <span class="message-time">{{ formatTime(message.sentAt) }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="!isLoading && messages.length === 0">
+            <span class="empty-icon">💬</span>
+            <h3>Início da conversa</h3>
+            <p>Envie a primeira mensagem!</p>
+        </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+        <button class="attach-button">
+            <span class="icon">📎</span>
+        </button>
+        <input type="text" class="message-input" placeholder="Digite sua mensagem..." [(ngModel)]="newMessage"
+            (keypress)="onKeyPress($event)" [disabled]="isSending">
+        <button class="send-button" (click)="sendMessage()" [disabled]="!newMessage.trim() || isSending">
+            <span class="icon" *ngIf="!isSending">📤</span>
+            <div class="mini-spinner" *ngIf="isSending"></div>
+        </button>
+    </div>
+</div>

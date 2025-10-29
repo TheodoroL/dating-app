@@ -1,36 +1,49 @@
 <div class="messages-root">
     <!-- Header -->
     <header class="header">
-        <button class="back-button">
+        <button routerLink="/home" class="back-button">
             <span class="icon">←</span>
         </button>
-        <h2 class="header-title">Dating Matches</h2>
+        <h2 class="header-title">Mensagens</h2>
     </header>
 
     <!-- Subtitle -->
-    <p class="subtitle">Check out lists of matches & keep swiping</p>
+    <p class="subtitle">Confira suas conversas e continue explorando</p>
 
     <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab active">All</button>
-        <button class="tab">You Liked</button>
-        <button class="tab">Liked You</button>
-        <button class="tab">Views</button>
-    </div>
 
     <!-- Matches List -->
-    <div class="matches-list">
-        <div class="match-item" *ngFor="let match of matches">
-            <div class="avatar"></div>
-            <div class="match-info">
-                <h3 class="match-name">{{ match.name }}</h3>
-                <p class="match-message">{{ match.message }}</p>
-                <p class="match-time">{{ match.time }} | {{ match.date }}</p>
+    <div class="matches-list" *ngIf="!isLoading && conversations.length > 0">
+        <div class="match-item" *ngFor="let conversation of conversations" (click)="openConversation(conversation)">
+            <div class="avatar" [style.backgroundImage]="'url(' + getProfilePhoto(conversation) + ')'"
+                [class.no-photo]="!getProfilePhoto(conversation)">
+                <div class="unread-badge" *ngIf="conversation.unreadCount > 0">
+                    {{ conversation.unreadCount }}
+                </div>
             </div>
-            <button class="menu-button">
+            <div class="match-info">
+                <h3 class="match-name">{{ conversation.otherUser.firstname }} {{ conversation.otherUser.lastname }}</h3>
+                <p class="match-message">{{ getLastMessageText(conversation) }}</p>
+                <p class="match-time">{{ getLastMessageTime(conversation) }} | {{ getLastMessageDate(conversation) }}
+                </p>
+            </div>
+            <button class="menu-button" (click)="$event.stopPropagation()">
                 <span>⋮</span>
             </button>
         </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Carregando conversas...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && conversations.length === 0">
+        <span class="empty-icon">💬</span>
+        <h3>Nenhuma conversa ainda</h3>
+        <p>Comece a dar match para iniciar conversas!</p>
     </div>
 
     <!-- Bottom Navigation -->

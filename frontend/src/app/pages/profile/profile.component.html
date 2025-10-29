@@ -1,1 +1,86 @@
-<p>profile works!</p>
+<div class="profile-root">
+    <!-- Header -->
+    <header class="header">
+        <h1>Meu Perfil</h1>
+    </header>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Carregando perfil...</p>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content" *ngIf="!isLoading && user">
+        <!-- Profile Photo -->
+        <div class="photo-section">
+            <div class="photo-container">
+                <div class="photo" *ngIf="getProfilePhoto()" [style.backgroundImage]="'url(' + getProfilePhoto() + ')'">
+                </div>
+                <div class="photo-placeholder" *ngIf="!getProfilePhoto()">
+                    <span class="icon">👤</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="info-section">
+            <h2 class="user-name">{{ user.firstname }} {{ user.lastname }}</h2>
+            <p class="user-age" *ngIf="user.age">{{ user.age }} anos</p>
+        </div>
+
+        <!-- Details Cards -->
+        <div class="details-section">
+            <!-- Email Card -->
+            <div class="detail-card">
+                <div class="card-icon">📧</div>
+                <div class="card-content">
+                    <span class="card-label">E-mail</span>
+                    <span class="card-value">{{ user.email }}</span>
+                </div>
+            </div>
+
+            <!-- Gender Card -->
+            <div class="detail-card">
+                <div class="card-icon">⚧</div>
+                <div class="card-content">
+                    <span class="card-label">Gênero</span>
+                    <span class="card-value">{{ getGenderLabel() }}</span>
+                </div>
+            </div>
+
+            <!-- Preference Card -->
+            <div class="detail-card">
+                <div class="card-icon">💕</div>
+                <div class="card-content">
+                    <span class="card-label">Interesse em</span>
+                    <span class="card-value">{{ getPreferenceLabel() }}</span>
+                </div>
+            </div>
+
+            <!-- Member Since Card -->
+            <div class="detail-card">
+                <div class="card-icon">📅</div>
+                <div class="card-content">
+                    <span class="card-label">Membro desde</span>
+                    <span class="card-value">{{ getMemberSince() }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-section">
+            <button class="btn-edit" (click)="editProfile()">
+                <span class="icon">✏️</span>
+                Editar Perfil
+            </button>
+            <button class="btn-logout" (click)="logout()">
+                <span class="icon">🚪</span>
+                Sair
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <app-bottom-nav></app-bottom-nav>
+</div>

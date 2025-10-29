@@ -1,6 +1,11 @@
 <div class="user-card">
-    <div class="card-image">
+    <div class="card-image"
+        [style.backgroundImage]="(user.photo || user.imageUrl) ? 'url(' + (user.photo || user.imageUrl) + ')' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'"
+        [class.no-photo]="!user.photo && !user.imageUrl">
         <div class="online-indicator" *ngIf="user.isOnline"></div>
+        <div class="user-initials" *ngIf="!user.photo && !user.imageUrl">
+            {{ user.name.split(' ')[0][0] }}{{ user.name.split(' ')[1] ? user.name.split(' ')[1][0] : '' }}
+        </div>
     </div>
 
     <div class="card-info">

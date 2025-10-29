@@ -2,13 +2,15 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface User {
-  id: number;
+  id: number | string;
   name: string;
   age: number;
   distance: string;
   photoCount: number;
   isOnline: boolean;
   imageUrl?: string;
+  photo?: string;
+  gender?: string;
 }
 
 @Component({

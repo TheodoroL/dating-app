@@ -14,21 +14,27 @@
 
         <form class="login-form">
             <div class="form-group">
-                <app-input typeInput="email" placeholderInput="Email">
+                <app-input typeInput="email" placeholderInput="Email" [(ngModel)]="email" name="email">
                 </app-input>
             </div>
 
             <div class="form-group">
-                <app-input typeInput="password" placeholderInput="Password">
+                <app-input typeInput="password" placeholderInput="Senha" [(ngModel)]="password" name="password">
                 </app-input>
             </div>
 
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
             <div class="links-container">
-                <a routerLink="/register" class="link">Sign up</a>
+                <a routerLink="/register" class="link">Cadastre-se</a>
             </div>
 
             <div class="button-container">
-                <app-button textButton="Continue"></app-button>
+                <app-button textButton="{{ isLoading ? 'Entrando...' : 'Continuar' }}" [disabled]="isLoading"
+                    (clicked)="onLogin()">
+                </app-button>
             </div>
         </form>
     </div>

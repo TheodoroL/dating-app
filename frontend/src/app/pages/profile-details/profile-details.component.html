@@ -3,22 +3,23 @@
         <a class="back-button" routerLink="/">
             <span class="arrow-back">←</span>
         </a>
-        <h2 class="title">Personal Details</h2>
+        <h2 class="title">Detalhes Pessoais</h2>
     </div>
 
     <div class="content">
         <div class="profile-section">
-            <h1 class="main-title">Profile Details</h1>
-            <p class="subtitle">Fill up the following details</p>
+            <h1 class="main-title">Dados do Perfil</h1>
+            <p class="subtitle">Preencha os dados abaixo</p>
 
             <div class="avatar-container">
                 <div class="avatar">
-                    <img src="assets/avatar-placeholder.png" alt="Profile Avatar" *ngIf="avatarUrl" [src]="avatarUrl">
+                    <img [src]="avatarUrl" alt="Profile Avatar" *ngIf="avatarUrl">
                     <div class="avatar-placeholder" *ngIf="!avatarUrl">
                         <span class="user-icon">👤</span>
                     </div>
                 </div>
-                <button class="camera-button">
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                <button type="button" class="camera-button" (click)="fileInput.click()">
                     <span class="camera-icon">📷</span>
                 </button>
             </div>
@@ -26,39 +27,56 @@
 
         <form class="profile-form">
             <div class="form-group">
-                <app-input typeInput="text" placeholderInput="First Name">
+                <app-input typeInput="text" placeholderInput="Nome" [(ngModel)]="firstname" name="firstname">
                 </app-input>
             </div>
 
             <div class="form-group">
-                <app-input typeInput="text" placeholderInput="Last Name">
+                <app-input typeInput="text" placeholderInput="Sobrenome" [(ngModel)]="lastname" name="lastname">
                 </app-input>
             </div>
 
             <div class="form-group">
-                <app-input typeInput="date" placeholderInput="DOB">
-                </app-input>
-            </div>
-            <div class="form-group">
-                <app-input typeInput="email" placeholderInput="Email">
-                </app-input>
-            </div>
-            <div class="form-group">
-                <app-input typeInput="password" placeholderInput="password">
+                <app-input typeInput="date" placeholderInput="Data de Nascimento" [(ngModel)]="dob" name="dob">
                 </app-input>
             </div>
 
             <div class="form-group">
-                <select class="custom-select">
-                    <option value="" disabled selected>Select your preference</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                <app-input typeInput="email" placeholderInput="Email" [(ngModel)]="email" name="email">
+                </app-input>
+            </div>
+
+            <div class="form-group">
+                <app-input typeInput="password" placeholderInput="Senha" [(ngModel)]="password" name="password">
+                </app-input>
+            </div>
+
+            <div class="form-group">
+                <label>Gênero:</label>
+                <select class="custom-select" [(ngModel)]="gender" name="gender" required>
+                    <option value="MALE">Masculino</option>
+                    <option value="FEMALE">Feminino</option>
+                    <option value="OTHER">Outro</option>
                 </select>
             </div>
 
+            <div class="form-group">
+                <label>Interesse em:</label>
+                <select class="custom-select" [(ngModel)]="preference" name="preference" required>
+                    <option value="MALE">Homens</option>
+                    <option value="FEMALE">Mulheres</option>
+                    <option value="OTHER">Todos</option>
+                </select>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
             <div class="button-container">
-                <app-button textButton="Continue"></app-button>
+                <app-button textButton="{{ isLoading ? 'Cadastrando...' : 'Continuar' }}" [disabled]="isLoading"
+                    type="submit" (clicked)="onRegister()">
+                </app-button>
             </div>
         </form>
     </div>

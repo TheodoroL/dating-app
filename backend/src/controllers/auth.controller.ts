@@ -38,7 +38,8 @@ export async function createUser(req: Request<unknown, Record<string, never>, Us
 
     // Se houver upload de foto, salvar no banco
     if (req.file) {
-      const photoPath = `/uploads/payload/${req.file.filename}`;
+      // Salvar apenas o caminho relativo a partir de /uploads
+      const photoPath = `/payload/${req.file.filename}`;
 
       await prisma.photo.create({
         data: {

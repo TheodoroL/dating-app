@@ -5,35 +5,50 @@ import { ProfileDetailsComponent } from './pages/profile-details/profile-details
 import { HomeComponent } from './pages/home/home.component';
 import  { UserListComponent } from './pages/user-list/user-list.component';
 import { MessagesComponent } from './pages/messages/messages.component';
+import { ConversationComponent } from './pages/conversation/conversation.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { authGuard } from './guards/auth.guard';
+import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: SplashComponent
+        component: SplashComponent,
+        canActivate: [guestGuard]
     },
     {
         path: "login",
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [guestGuard]
     },
     {
         path:'register',
-        component : ProfileDetailsComponent
+        component : ProfileDetailsComponent,
+        canActivate: [guestGuard]
     },
     {
-        "path":"home",
-        component: HomeComponent
+        path:"home",
+        component: HomeComponent,
+        canActivate: [authGuard]
     },
     {
         path:"lists",
-        component: UserListComponent
+        component: UserListComponent,
+        canActivate: [authGuard]
     },
     {
         path:"messages",
-        component: MessagesComponent
+        component: MessagesComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path:"chat/:matchId",
+        component: ConversationComponent,
+        canActivate: [authGuard]
     },
     {
         path:"profile",
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [authGuard]
     }
 ];

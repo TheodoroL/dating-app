@@ -1,7 +1,7 @@
 <div class="user-list-root">
     <!-- Header -->
     <header class="header">
-        <h2 class="header-title">Add Your Story</h2>
+        <h2 class="header-title">Descubra Pessoas</h2>
         <div class="header-icons">
             <button class="icon-button">
                 <span class="icon">🔍</span>
@@ -17,16 +17,53 @@
 
     <!-- Tabs -->
     <div class="tabs">
-        <button class="tab" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">All</button>
-        <button class="tab" [class.active]="activeTab === 'online'" (click)="activeTab = 'online'">Online</button>
-        <button class="tab" [class.active]="activeTab === 'new'" (click)="activeTab = 'new'">New Daters</button>
-        <button class="tab" [class.active]="activeTab === 'liked'" (click)="activeTab = 'liked'">Liked You</button>
+        <button class="tab" [class.active]="activeTab === 'all'" (click)="switchTab('all')">
+            Todos
+        </button>
+        <button class="tab" [class.active]="activeTab === 'received'" (click)="switchTab('received')">
+            Curtiram Você
+            <span class="badge" *ngIf="likedByUsers.length > 0">{{ likedByUsers.length }}</span>
+        </button>
+        <button class="tab" [class.active]="activeTab === 'sent'" (click)="switchTab('sent')">
+            Você Curtiu
+            <span class="badge" *ngIf="sentLikes.length > 0">{{ sentLikes.length }}</span>
+        </button>
     </div>
 
     <!-- User Grid -->
-    <div class="user-grid">
+    <div class="user-grid" *ngIf="!isLoading && filteredUsers.length > 0">
         <app-user-card *ngFor="let user of filteredUsers" [user]="user" (click)="onUserClick(user)">
         </app-user-card>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Carregando usuários...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && filteredUsers.length === 0">
+        <!-- Empty state for "Curtiram Você" -->
+        <ng-container *ngIf="activeTab === 'received'">
+            <span class="empty-icon">�</span>
+            <h3>Ninguém curtiu você ainda</h3>
+            <p>Continue explorando! Seus matches aparecerão aqui quando alguém curtir seu perfil.</p>
+        </ng-container>
+
+        <!-- Empty state for "Você Curtiu" -->
+        <ng-container *ngIf="activeTab === 'sent'">
+            <span class="empty-icon">❤️</span>
+            <h3>Você ainda não curtiu ninguém</h3>
+            <p>Vá para a aba "Todos" e comece a dar likes nas pessoas que você gostou!</p>
+        </ng-container>
+
+        <!-- Empty state for "Todos" -->
+        <ng-container *ngIf="activeTab === 'all'">
+            <span class="empty-icon">�😔</span>
+            <h3>Nenhum usuário encontrado</h3>
+            <p>Tente novamente mais tarde ou ajuste suas preferências</p>
+        </ng-container>
     </div>
 
     <!-- Bottom Navigation -->
