@@ -2,7 +2,7 @@
     <!-- Header -->
     <header class="header">
         <button routerLink="/home" class="back-button">
-            <span class="icon">←</span>
+            <i class="ph-bold ph-arrow-left icon"></i>
         </button>
         <h2 class="header-title">Mensagens</h2>
     </header>
@@ -28,7 +28,7 @@
                 </p>
             </div>
             <button class="menu-button" (click)="$event.stopPropagation()">
-                <span>⋮</span>
+                <i class="ph-bold ph-dots-three-vertical"></i>
             </button>
         </div>
     </div>
@@ -41,7 +41,7 @@
 
     <!-- Empty State -->
     <div class="empty-state" *ngIf="!isLoading && conversations.length === 0">
-        <span class="empty-icon">💬</span>
+        <i class="ph-bold ph-chat-circle empty-icon"></i>
         <h3>Nenhuma conversa ainda</h3>
         <p>Comece a dar match para iniciar conversas!</p>
     </div>

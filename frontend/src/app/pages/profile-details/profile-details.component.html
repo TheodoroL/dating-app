@@ -1,7 +1,7 @@
 <div class="login-root">
     <div class="header">
         <a class="back-button" routerLink="/">
-            <span class="arrow-back">←</span>
+            <i class="ph-bold ph-arrow-left arrow-back"></i>
         </a>
         <h2 class="title">Detalhes Pessoais</h2>
     </div>
@@ -15,12 +15,12 @@
                 <div class="avatar">
                     <img [src]="avatarUrl" alt="Profile Avatar" *ngIf="avatarUrl">
                     <div class="avatar-placeholder" *ngIf="!avatarUrl">
-                        <span class="user-icon">👤</span>
+                        <i class="ph-bold ph-user user-icon"></i>
                     </div>
                 </div>
                 <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
                 <button type="button" class="camera-button" (click)="fileInput.click()">
-                    <span class="camera-icon">📷</span>
+                    <i class="ph-bold ph-camera camera-icon"></i>
                 </button>
             </div>
         </div>

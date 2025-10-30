@@ -4,13 +4,13 @@
         <h2 class="header-title">Descubra Pessoas</h2>
         <div class="header-icons">
             <button class="icon-button">
-                <span class="icon">🔍</span>
+                <i class="ph-bold ph-magnifying-glass icon"></i>
             </button>
             <button class="icon-button">
-                <span class="icon">🔔</span>
+                <i class="ph-bold ph-bell icon"></i>
             </button>
             <button class="icon-button">
-                <span class="icon">⚙️</span>
+                <i class="ph-bold ph-gear icon"></i>
             </button>
         </div>
     </header>
@@ -46,21 +46,21 @@
     <div class="empty-state" *ngIf="!isLoading && filteredUsers.length === 0">
         <!-- Empty state for "Curtiram Você" -->
         <ng-container *ngIf="activeTab === 'received'">
-            <span class="empty-icon">�</span>
+            <i class="ph-bold ph-heart empty-icon"></i>
             <h3>Ninguém curtiu você ainda</h3>
             <p>Continue explorando! Seus matches aparecerão aqui quando alguém curtir seu perfil.</p>
         </ng-container>
 
         <!-- Empty state for "Você Curtiu" -->
         <ng-container *ngIf="activeTab === 'sent'">
-            <span class="empty-icon">❤️</span>
+            <i class="ph-bold ph-heart empty-icon"></i>
             <h3>Você ainda não curtiu ninguém</h3>
             <p>Vá para a aba "Todos" e comece a dar likes nas pessoas que você gostou!</p>
         </ng-container>
 
         <!-- Empty state for "Todos" -->
         <ng-container *ngIf="activeTab === 'all'">
-            <span class="empty-icon">�😔</span>
+            <i class="ph-bold ph-user-circle empty-icon"></i>
             <h3>Nenhum usuário encontrado</h3>
             <p>Tente novamente mais tarde ou ajuste suas preferências</p>
         </ng-container>

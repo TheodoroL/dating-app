@@ -19,7 +19,6 @@ function calculateAge(birthDate: Date): number {
 export async function getDiscoverUsers(req: Request, res: Response) {
   try {
     const userId = req.user?.id;
-    console.log('🔍 getDiscoverUsers - userId:', userId);
     
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -31,7 +30,6 @@ export async function getDiscoverUsers(req: Request, res: Response) {
       select: { preference: true }
     });
     
-    console.log('👤 Usuário atual - preferência:', currentUser?.preference);
 
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
@@ -81,8 +79,6 @@ export async function getDiscoverUsers(req: Request, res: Response) {
       profilePhoto: user.photos.find(p => p.profilePhoto)?.url || user.photos[0]?.url
     }));
 
-    console.log('📤 Retornando', formattedUsers.length, 'usuários');
-    console.log('👥 Usuários:', formattedUsers.map(u => `${u.firstname} ${u.lastname} (${u.gender})`));
 
     res.status(200).json({
       users: formattedUsers,

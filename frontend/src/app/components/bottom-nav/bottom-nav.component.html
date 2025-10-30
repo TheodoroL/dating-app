@@ -1,14 +1,14 @@
 <nav class="bottom-nav">
     <button class="nav-item" [class.active]="activeItem === 'home'" (click)="onItemClick('home')">
-        <span class="nav-icon">🔥</span>
+        <i class="ph-bold ph-house nav-icon"></i>
     </button>
     <button class="nav-item" [class.active]="activeItem === 'discover'" (click)="onItemClick('discover')">
-        <span class="nav-icon">⚡</span>
+        <i class="ph-bold ph-compass nav-icon"></i>
     </button>
     <button class="nav-item" [class.active]="activeItem === 'messages'" (click)="onItemClick('messages')">
-        <span class="nav-icon">💬</span>
+        <i class="ph-bold ph-chat nav-icon"></i>
     </button>
     <button class="nav-item" [class.active]="activeItem === 'profile'" (click)="onItemClick('profile')">
-        <span class="nav-icon">👤</span>
+        <i class="ph-bold ph-user nav-icon"></i>
     </button>
 </nav>
