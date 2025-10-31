@@ -18,19 +18,15 @@ app.use(
   })
 );
 
-// CORS configuration - allow both development and production URLs
-const corsOrigin = [
-  "http://localhost:4200", // Development
-  getFrontendUrl() // Production (Vercel)
-];
-
+// CORS configuration - temporarily allow all origins for debugging
 app.use(
   cors({
-    origin: corsOrigin,
+    origin:'*', // Allow all origins
     credentials: true,
     exposedHeaders: ["Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    optionsSuccessStatus: 200
   })
 );
 
@@ -54,6 +50,6 @@ app.use("/matches", messageRouter);
 app.listen(env.PORT, () => {
   console.log(`🚀 Server is running on port ${env.PORT}`);
   console.log(`📍 Environment: ${env.NODE_ENV}`);
-  console.log(`🔒 CORS Origin: ${Array.isArray(corsOrigin) ? corsOrigin.join(', ') : corsOrigin}`);
   console.log(`🌐 Frontend URL: ${getFrontendUrl()}`);
+  console.log(`🔒 CORS: Allowing all origins for debugging`);
 });
