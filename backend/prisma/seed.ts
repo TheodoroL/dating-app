@@ -3,13 +3,13 @@ import { prisma } from "../src/libs/database/prisma.js";
 
 async function main() {
   console.log("🌱 Iniciando seed...");
-  
-    // Limpar dados existentes
-    await prisma.message.deleteMany();
-    await prisma.match.deleteMany();
-    await prisma.like.deleteMany();
-    await prisma.photo.deleteMany();
-    await prisma.user.deleteMany();
+
+  // Limpar dados existentes
+  await prisma.message.deleteMany();
+  await prisma.match.deleteMany();
+  await prisma.like.deleteMany();
+  await prisma.photo.deleteMany();
+  await prisma.user.deleteMany();
 
   console.log("🗑️  Dados antigos removidos");
 
