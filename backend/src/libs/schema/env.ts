@@ -19,9 +19,7 @@ const _env = envSchema.parse(process.env);
 
 
 export const getFrontendUrl = (): string => {
-  return _env.NODE_ENV === "production" 
-    ? _env.FRONTEND_URL
-    : "http://localhost:4200";
+  return _env.FRONTEND_URL;
 };
 
 export const env = _env;

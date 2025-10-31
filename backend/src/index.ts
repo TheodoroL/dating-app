@@ -18,14 +18,16 @@ app.use(
   })
 );
 
-// CORS configuration based on environment
-const corsOrigin = env.NODE_ENV === "production" 
-  ? [getFrontendUrl()] // Only allow specific frontend URL in production
-  : "*"; // Allow all origins in development
+// CORS configuration - allow both development and production URLs
+const corsOrigin = [
+  "http://localhost:4200", // Development
+  getFrontendUrl() // Production (Vercel)
+];
 
 app.use(
   cors({
     origin: corsOrigin,
+    credentials: true,
     exposedHeaders: ["Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
