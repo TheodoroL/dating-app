@@ -15,14 +15,6 @@
         </div>
     </header>
 
-    <!-- Add Story Button -->
-    <!-- <div class="story-add">
-        <button class="add-story-btn">
-            <span class="plus-icon">+</span>
-            Adicionar História
-        </button>
-    </div> -->
-
     <!-- Profile Card -->
     <div class="profile-card" *ngIf="currentProfile; else noUsers">
         <button class="lock-icon">
@@ -37,12 +29,13 @@
                     <div class="user-avatar" *ngIf="!hasProfilePhoto()">
                         <span class="initials">{{ currentProfile.firstname[0] }}{{ currentProfile.lastname[0] }}</span>
                     </div>
-                    <h3 class="user-name">{{ currentProfile.firstname }} {{ currentProfile.lastname }}, {{
-                        currentProfile.age }}</h3>
-                    <p class="user-details">
-                        <span class="gender-badge">{{ getGenderIcon() }}</span>
-                        {{ currentProfile.gender }}
-                    </p>
+                    <h3 class="user-name">
+                        {{ currentProfile.firstname }} {{ currentProfile.lastname }}, {{ currentProfile.age }}
+                        <span class="gender-info">
+                            <span class="gender-badge" [innerHTML]="getGenderIcon()"></span>
+                            {{ getGenderName() }}
+                        </span>
+                    </h3>
                 </div>
             </div>
 

@@ -1,20 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../libs/database/prisma.js";
-
-// Função auxiliar para calcular idade
-function calculateAge(birthDate: Date): number {
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  const dayDiff = today.getDate() - birthDate.getDate();
-
-  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    age--;
-  }
-
-  return age;
-}
-
+import { calculateAge } from "../utils/calculateAge.js";
 // GET /users - Estilo Tinder: retorna usuários que você ainda não curtiu/rejeitou
 export async function getDiscoverUsers(req: Request, res: Response) {
   try {
@@ -27,7 +13,7 @@ export async function getDiscoverUsers(req: Request, res: Response) {
     // Pegar preferência do usuário logado
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { preference: true }
+      select: { preference: true, gender: true }
     });
     
 
@@ -43,6 +29,18 @@ export async function getDiscoverUsers(req: Request, res: Response) {
 
     const interactedUserIds = alreadyInteracted.map(interaction => interaction.toUserId);
 
+    // Definir filtro de gênero baseado na preferência e no próprio gênero
+    let genderFilter: any = {};
+    
+    // Se o usuário tem gênero OTHER ou preferência OTHER, pode ver todos os gêneros
+    if (currentUser.gender === 'OTHER' || currentUser.preference === 'OTHER') {
+      // Não aplica filtro de gênero - pode ver todos
+      genderFilter = {};
+    } else {
+      // Aplica filtro normal de preferência
+      genderFilter = { gender: currentUser.preference };
+    }
+
     // Buscar usuários para mostrar
     const users = await prisma.user.findMany({
       where: {
@@ -50,7 +48,7 @@ export async function getDiscoverUsers(req: Request, res: Response) {
           not: userId, // Não mostrar você mesmo
           notIn: interactedUserIds // Não mostrar quem você já curtiu/descurtiu
         },
-        gender: currentUser.preference // Filtrar por preferência
+        ...genderFilter // Aplicar filtro de gênero conforme a lógica acima
       },
       select: {
         id: true,

@@ -57,7 +57,6 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewChecke
     this.isLoading = true;
     this.messageService.getMessages(this.matchId).subscribe({
       next: (response) => {
-        console.log('📨 Mensagens carregadas:', response);
         this.messages = response.messages || [];
         this.isLoading = false;
         this.shouldScrollToBottom = true;
@@ -91,7 +90,6 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewChecke
 
     this.messageService.sendMessage(this.matchId, messageContent).subscribe({
       next: (response) => {
-        console.log('✅ Mensagem enviada:', response);
         // Recarregar todas as mensagens para pegar a formatação correta do backend
         this.loadMessages();
         this.isSending = false;

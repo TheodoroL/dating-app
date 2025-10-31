@@ -23,9 +23,6 @@ export class LoginComponent {
   errorMessage = '';
 
   onLogin() {
-    console.log('🔵 onLogin chamado');
-    console.log('Email:', this.email);
-    console.log('Password:', this.password ? '***' : '(vazio)');
 
     if (!this.email || !this.password) {
       this.errorMessage = 'Por favor, preencha todos os campos';
@@ -36,15 +33,11 @@ export class LoginComponent {
     this.errorMessage = '';
 
     this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (response) => {
-        console.log('✅ Login realizado com sucesso:', response);
-        
+      next: () => {
         // Verificar se o token foi salvo
         const token = this.authService.getToken();
-        console.log('🔑 Token salvo:', token ? 'Sim' : 'Não');
         
         if (token) {
-          console.log('🏠 Redirecionando para /home');
           this.router.navigate(['/home']);
         } else {
           console.error('❌ Token não foi salvo!');

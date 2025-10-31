@@ -4,31 +4,31 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" // ou "postgresql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String          @id @default(uuid())
-  firstname      String
-  lastname       String
-  email          String          @unique
-  password       String
-  gender         Gender
-  preference   Gender
+  id         String   @id @default(uuid())
+  firstname  String
+  lastname   String
+  email      String   @unique
+  password   String
+  gender     Gender
+  preference Gender
   dob        DateTime
-  photos         Photo[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  photos     Photo[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Photo {
-  id        Int      @id @default(autoincrement())
-  url       String
-  userId    String
+  id           Int      @id @default(autoincrement())
+  url          String
+  userId       String
   profilePhoto Boolean  @default(false)
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
 }
 
 // Tabela de likes: registra quando um usuário curte outro
@@ -38,8 +38,8 @@ model Photo {
 // Quando ambos os registros existem com isLike=true = MATCH automático!
 model Like {
   id         Int      @id @default(autoincrement())
-  fromUserId String   // Quem deu o like/dislike (você)
-  toUserId   String   // Quem recebeu o like/dislike (pessoa que você curtiu/descurtiu)
+  fromUserId String // Quem deu o like/dislike (você)
+  toUserId   String // Quem recebeu o like/dislike (pessoa que você curtiu/descurtiu)
   isLike     Boolean  @default(true) // true = like, false = dislike
   createdAt  DateTime @default(now())
 
@@ -52,8 +52,8 @@ model Like {
 // Permite que eles conversem através de mensagens
 model Match {
   id        Int       @id @default(autoincrement())
-  user1Id   String    // ID do primeiro usuário
-  user2Id   String    // ID do segundo usuário
+  user1Id   String // ID do primeiro usuário
+  user2Id   String // ID do segundo usuário
   createdAt DateTime  @default(now())
   messages  Message[] // Mensagens trocadas neste match
 
@@ -65,9 +65,9 @@ model Match {
 // Mensagens trocadas dentro de um match
 model Message {
   id        Int      @id @default(autoincrement())
-  senderId  String   // ID de quem enviou a mensagem
-  matchId   Int      // ID do match onde a mensagem foi enviada
-  content   String   // Conteúdo da mensagem
+  senderId  String // ID de quem enviou a mensagem
+  matchId   Int // ID do match onde a mensagem foi enviada
+  content   String // Conteúdo da mensagem
   createdAt DateTime @default(now())
   match     Match    @relation(fields: [matchId], references: [id])
 

@@ -31,21 +31,16 @@ export class UserService {
   private apiUrl = environment.apiUrl;
 
   getUsers(): Observable<UserProfile[]> {
-    console.log('🌐 UserService.getUsers - URL:', `${this.apiUrl}/users/discover`);
     return this.http.get<any>(`${this.apiUrl}/users/discover`).pipe(
       map((response: any) => {
-        console.log('📦 Resposta da API /users/discover:', response);
-        console.log('👥 Usuários encontrados:', response.users?.length || 0);
         return response.users || [];
       })
     );
   }
 
   getCurrentUser(): Observable<UserProfile> {
-    console.log('🌐 UserService.getCurrentUser - URL:', `${this.apiUrl}/users/me`);
     return this.http.get<{ user: UserProfile }>(`${this.apiUrl}/users/me`).pipe(
       map((response) => {
-        console.log('📦 Resposta da API /users/me:', response);
         return response.user;
       })
     );

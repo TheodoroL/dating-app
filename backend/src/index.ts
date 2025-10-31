@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import path from "node:path";
-import { env } from "./libs/schema/env.js";
+import { env, getFrontendUrl } from "./libs/schema/env.js";
 import { authRouter } from "./router/auth.route.js";
 import { likeRouter } from "./router/like.route.js";
 import { messageRouter } from "./router/message.route.js";
@@ -18,9 +18,14 @@ app.use(
   })
 );
 
+// CORS configuration based on environment
+const corsOrigin = env.NODE_ENV === "production" 
+  ? [getFrontendUrl()] // Only allow specific frontend URL in production
+  : "*"; // Allow all origins in development
+
 app.use(
   cors({
-    origin: "*",
+    origin: corsOrigin,
     exposedHeaders: ["Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
@@ -30,7 +35,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos com headers CORS apropriados
 app.use(
   "/uploads",
   (req, res, next) => {
@@ -46,5 +50,8 @@ app.use("/likes", likeRouter);
 app.use("/matches", messageRouter);
 
 app.listen(env.PORT, () => {
-  console.log("Server is running on port", env.PORT);
+  console.log(`🚀 Server is running on port ${env.PORT}`);
+  console.log(`📍 Environment: ${env.NODE_ENV}`);
+  console.log(`🔒 CORS Origin: ${Array.isArray(corsOrigin) ? corsOrigin.join(', ') : corsOrigin}`);
+  console.log(`🌐 Frontend URL: ${getFrontendUrl()}`);
 });

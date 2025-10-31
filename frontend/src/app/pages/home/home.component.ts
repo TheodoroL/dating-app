@@ -4,6 +4,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
 import { MatchModalComponent } from '../../components/match-modal/match-modal.component';
 import { UserService, UserProfile } from '../../services/user.service';
 import { LikeService } from '../../services/like.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-home',
@@ -47,7 +48,7 @@ export class HomeComponent implements OnInit {
         photoUrl = photoUrl.replace('/uploads/', '/');
       }
       // Constrói a URL do backend
-      return `http://localhost:8080/uploads${photoUrl}`;
+      return `${environment.apiUrl}/uploads${photoUrl}`;
     }
     
     // Se tiver profilePhoto, retorna ela
@@ -62,7 +63,7 @@ export class HomeComponent implements OnInit {
         photoUrl = photoUrl.replace('/uploads/', '/');
       }
       // Constrói a URL do backend
-      return `http://localhost:8080/uploads${photoUrl}`;
+      return `${environment.apiUrl}/uploads${photoUrl}`;
     }
     
     // Fallback: retorna string vazia para usar o gradiente do CSS
@@ -79,9 +80,20 @@ export class HomeComponent implements OnInit {
     
     const gender = this.currentProfile.gender.toUpperCase();
     switch(gender) {
-      case 'MALE': return '♂️';
-      case 'FEMALE': return '♀️';
-      default: return '⚧️';
+      case 'MALE': return '<i class="ph ph-gender-male"></i>';
+      case 'FEMALE': return '<i class="ph ph-gender-female"></i>';
+      default: return '<i class="ph ph-gender-transgender"></i>';
+    }
+  }
+
+  getGenderName(): string {
+    if (!this.currentProfile) return '';
+    
+    const gender = this.currentProfile.gender.toUpperCase();
+    switch(gender) {
+      case 'MALE': return 'Homem';
+      case 'FEMALE': return 'Mulher';
+      default: return 'Outro';
     }
   }
 
@@ -98,11 +110,9 @@ export class HomeComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    console.log('🔄 Carregando usuários...');
     
     this.userService.getUsers().subscribe({
       next: (users) => {
-        console.log('✅ Usuários carregados:', users);
         this.users = users;
         this.currentIndex = 0;
         this.currentPhotoIndex = 0;
@@ -119,11 +129,9 @@ export class HomeComponent implements OnInit {
     if (!this.currentProfile || this.isLoading) return;
 
     this.isLoading = true;
-    console.log('❤️ Dando like em:', this.currentProfile.firstname);
 
     this.likeService.likeUser(this.currentProfile.id).subscribe({
       next: (response) => {
-        console.log('✅ Like enviado:', response);
         this.isLoading = false;
         
         if (response.isMatch) {
@@ -147,11 +155,9 @@ export class HomeComponent implements OnInit {
     if (!this.currentProfile || this.isLoading) return;
 
     this.isLoading = true;
-    console.log('✕ Pulando perfil:', this.currentProfile.firstname);
 
     this.likeService.dislikeUser(this.currentProfile.id).subscribe({
       next: () => {
-        console.log('✅ Dislike registrado');
         this.isLoading = false;
         this.nextProfile();
       },
@@ -169,7 +175,6 @@ export class HomeComponent implements OnInit {
     
     // Se chegou ao fim da lista, recarregar
     if (this.currentIndex >= this.users.length) {
-      console.log('📋 Fim da lista, recarregando...');
       this.currentIndex = 0;
       this.loadUsers();
     }

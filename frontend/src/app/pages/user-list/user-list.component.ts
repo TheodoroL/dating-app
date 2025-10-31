@@ -5,6 +5,7 @@ import { UserCardComponent, User } from '../../components/user-card/user-card.co
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 import { UserService, UserProfile } from '../../services/user.service';
 import { LikeService } from '../../services/like.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-user-list',
@@ -42,11 +43,9 @@ export class UserListComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    console.log('🔄 Carregando usuários para descoberta...');
     
     this.userService.getUsers().subscribe({
       next: (users: UserProfile[]) => {
-        console.log('✅ Usuários carregados:', users);
         this.allUsers = users;
         this.users = this.mapUsersToCardFormat(users);
         this.isLoading = false;
@@ -59,15 +58,12 @@ export class UserListComponent implements OnInit {
   }
 
   loadReceivedLikes() {
-    console.log('💙 Carregando usuários que curtiram você...');
     this.isLoading = true;
     
     this.likeService.getReceivedLikes().subscribe({
       next: (response: any) => {
-        console.log('✅ Resposta de likes recebidos:', response);
         // A resposta é { likes: [...], total: number }
         const likes = response.likes || [];
-        console.log('💙 Likes recebidos:', likes.length);
         // Extrair os usuários dos likes e mapear
         const users = likes.map((like: any) => like.user).filter((user: any) => user != null);
         this.likedByUsers = this.mapUsersToCardFormat(users);
@@ -81,15 +77,12 @@ export class UserListComponent implements OnInit {
   }
 
   loadSentLikes() {
-    console.log('❤️ Carregando usuários que você curtiu...');
     this.isLoading = true;
     
     this.likeService.getSentLikes().subscribe({
       next: (response: any) => {
-        console.log('✅ Resposta de likes enviados:', response);
         // A resposta é { likes: [...], total: number }
         const likes = response.likes || [];
-        console.log('❤️ Likes enviados:', likes.length);
         // Extrair os usuários dos likes e mapear
         const users = likes.map((like: any) => like.user).filter((user: any) => user != null);
         this.sentLikes = this.mapUsersToCardFormat(users);
@@ -120,7 +113,6 @@ export class UserListComponent implements OnInit {
         id: user.id,
         name: `${user.firstname} ${user.lastname}`,
         age: age,
-        distance: '~ km away', // Distância pode ser calculada futuramente
         photoCount: user.photos?.length || 0,
         isOnline: Math.random() > 0.5, // Simulado - pode ser implementado com WebSocket
         photo: this.getProfilePhoto(user),
@@ -141,7 +133,7 @@ export class UserListComponent implements OnInit {
         photoUrl = photoUrl.replace('/uploads/', '/');
       }
       // Constrói a URL do backend
-      return `http://localhost:8080/uploads${photoUrl}`;
+      return `${environment.apiUrl}/uploads${photoUrl}`;
     }
     
     if (user.profilePhoto) {
@@ -153,7 +145,7 @@ export class UserListComponent implements OnInit {
       if (photoUrl.startsWith('/uploads/')) {
         photoUrl = photoUrl.replace('/uploads/', '/');
       }
-      return `http://localhost:8080/uploads${photoUrl}`;
+      return `${environment.apiUrl}/uploads${photoUrl}`;
     }
     
     return '';
@@ -172,7 +164,6 @@ export class UserListComponent implements OnInit {
   }
 
   onUserClick(user: User): void {
-    console.log('👤 Usuário clicado:', user);
     // Navegar para página de detalhes do perfil
     this.router.navigate(['/profile', user.id]);
   }
@@ -183,10 +174,8 @@ export class UserListComponent implements OnInit {
       event.stopPropagation(); // Evitar que o click no card seja acionado
     }
 
-    console.log('❤️ Curtindo usuário:', userId);
     this.likeService.likeUser(userId).subscribe({
       next: (response) => {
-        console.log('✅ Like enviado:', response);
         if (response.isMatch) {
           alert('🎉 É um match!');
         }
@@ -207,10 +196,8 @@ export class UserListComponent implements OnInit {
       event.stopPropagation(); // Evitar que o click no card seja acionado
     }
 
-    console.log('💔 Rejeitando usuário:', userId);
     this.likeService.dislikeUser(userId).subscribe({
       next: (response) => {
-        console.log('✅ Dislike enviado:', response);
         // Remover o usuário da lista
         this.users = this.users.filter(u => u.id !== userId);
       },

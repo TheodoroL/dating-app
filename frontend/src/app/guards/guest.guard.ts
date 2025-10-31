@@ -8,7 +8,6 @@ export const guestGuard: CanActivateFn = (route, state) => {
 
   // Se já estiver autenticado, redireciona para home
   if (authService.isAuthenticated) {
-    console.log('🔐 Usuário já autenticado, redirecionando para /home');
     router.navigate(['/home']);
     return false;
   }

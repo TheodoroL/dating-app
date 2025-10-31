@@ -3,13 +3,13 @@ import { prisma } from "../src/libs/database/prisma.js";
 
 async function main() {
   console.log("🌱 Iniciando seed...");
-
-  // Limpar dados existentes
-  await prisma.message.deleteMany();
-  await prisma.match.deleteMany();
-  await prisma.like.deleteMany();
-  await prisma.photo.deleteMany();
-  await prisma.user.deleteMany();
+  
+    // Limpar dados existentes
+    await prisma.message.deleteMany();
+    await prisma.match.deleteMany();
+    await prisma.like.deleteMany();
+    await prisma.photo.deleteMany();
+    await prisma.user.deleteMany();
 
   console.log("🗑️  Dados antigos removidos");
 
@@ -83,6 +83,17 @@ async function main() {
         preference: "MALE",
         dob: new Date("1999-02-14")
       }
+    }),
+    prisma.user.create({
+      data: {
+        firstname: "Alex",
+        lastname: "Martinez",
+        email: "alex@example.com",
+        password: hashedPassword,
+        gender: "OTHER",
+        preference: "OTHER",
+        dob: new Date("1997-09-25")
+      }
     })
   ]);
 
@@ -110,6 +121,11 @@ async function main() {
         url: "https://i.pravatar.cc/300?img=9",
         userId: users[3].id,
         profilePhoto: true
+      },
+      {
+        url: "https://i.pravatar.cc/300?img=15",
+        userId: users[6].id, // Alex
+        profilePhoto: true
       }
     ]
   });
@@ -121,6 +137,7 @@ async function main() {
   // Maria (1) curte João (0) <- MATCH!
   // Pedro (2) curte Ana (3), descurte Maria (1)
   // Ana (3) curte Pedro (2) <- MATCH!
+  // Alex (6) com gênero OTHER pode curtir qualquer um
   await prisma.like.createMany({
     data: [
       { fromUserId: users[0].id, toUserId: users[1].id, isLike: true },
@@ -131,7 +148,9 @@ async function main() {
       { fromUserId: users[2].id, toUserId: users[1].id, isLike: false }, // Pedro descurtiu Maria
       { fromUserId: users[3].id, toUserId: users[2].id, isLike: true },
       { fromUserId: users[4].id, toUserId: users[1].id, isLike: true },
-      { fromUserId: users[5].id, toUserId: users[2].id, isLike: true }
+      { fromUserId: users[5].id, toUserId: users[2].id, isLike: true },
+      { fromUserId: users[6].id, toUserId: users[0].id, isLike: true }, // Alex curte João
+      { fromUserId: users[6].id, toUserId: users[1].id, isLike: true }  // Alex curte Maria
     ]
   });
 
@@ -192,12 +211,13 @@ async function main() {
 
   console.log("\n✨ Seed concluído com sucesso!");
   console.log("\n📊 Resumo:");
-  console.log(`   - ${users.length} usuários`);
-  console.log(`   - 4 fotos`);
-  console.log(`   - 7 likes + 2 dislikes`);
+  console.log(`   - ${users.length} usuários (incluindo 1 com gênero OTHER)`);
+  console.log(`   - 5 fotos`);
+  console.log(`   - 9 likes + 2 dislikes`);
   console.log(`   - ${matches.length} matches`);
   console.log(`   - 5 mensagens`);
   console.log("\n🔑 Todos os usuários têm a senha: password123");
+  console.log("\n🏳️‍⚧️ Alex (alex@example.com) tem gênero OTHER e pode ver todos os usuários");
 }
 
 main()

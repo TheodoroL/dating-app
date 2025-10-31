@@ -1,6 +1,6 @@
 <div class="login-root">
     <div class="header">
-        <a class="back-button" routerLink="/">
+        <a class="back-button" routerLink="/login">
             <i class="ph-bold ph-arrow-left arrow-back"></i>
         </a>
         <h2 class="title">Detalhes Pessoais</h2>
@@ -53,20 +53,26 @@
 
             <div class="form-group">
                 <label>Gênero:</label>
-                <select class="custom-select" [(ngModel)]="gender" name="gender" required>
-                    <option value="MALE">Masculino</option>
-                    <option value="FEMALE">Feminino</option>
-                    <option value="OTHER">Outro</option>
-                </select>
+                <div class="select-wrapper">
+                    <select class="custom-select" [(ngModel)]="gender" name="gender" required>
+                        <option value="MALE">Masculino</option>
+                        <option value="FEMALE">Feminino</option>
+                        <option value="OTHER">Outro</option>
+                    </select>
+                    <i class="ph ph-arrow-down select-arrow"></i>
+                </div>
             </div>
 
             <div class="form-group">
                 <label>Interesse em:</label>
-                <select class="custom-select" [(ngModel)]="preference" name="preference" required>
-                    <option value="MALE">Homens</option>
-                    <option value="FEMALE">Mulheres</option>
-                    <option value="OTHER">Todos</option>
-                </select>
+                <div class="select-wrapper">
+                    <select class="custom-select" [(ngModel)]="preference" name="preference" required>
+                        <option value="MALE">Homens</option>
+                        <option value="FEMALE">Mulheres</option>
+                        <option value="OTHER">Todos</option>
+                    </select>
+                    <i class="ph ph-arrow-down select-arrow"></i>
+                </div>
             </div>
 
             <div *ngIf="errorMessage" class="error-message">

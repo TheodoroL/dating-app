@@ -5,7 +5,6 @@ export interface User {
   id: number | string;
   name: string;
   age: number;
-  distance: string;
   photoCount: number;
   isOnline: boolean;
   imageUrl?: string;

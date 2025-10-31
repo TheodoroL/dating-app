@@ -32,8 +32,8 @@
             </div>
 
             <div class="button-container">
-                <app-button textButton="{{ isLoading ? 'Entrando...' : 'Continuar' }}" [disabled]="isLoading"
-                    (clicked)="onLogin()">
+                <app-button type="submit" textButton="{{ isLoading ? 'Entrando...' : 'Continuar' }}"
+                    [disabled]="isLoading" (clicked)="onLogin()">
                 </app-button>
             </div>
         </form>

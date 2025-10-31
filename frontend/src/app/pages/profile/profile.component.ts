@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 import { UserService, UserProfile } from '../../services/user.service';
+import { environment } from '../../../environments/environment.development';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -28,7 +29,6 @@ export class ProfileComponent implements OnInit {
     this.isLoading = true;
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
-        console.log('👤 Perfil carregado:', user);
         this.user = user;
         this.isLoading = false;
       },
@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
       photoUrl = photoUrl.replace('/uploads/', '/');
     }
     
-    return `http://localhost:8080/uploads${photoUrl}`;
+    return `${environment.apiUrl}/uploads${photoUrl}`;
   }
 
   getMemberSince(): string {

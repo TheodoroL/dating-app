@@ -138,6 +138,33 @@
         font-weight: 600;
         margin: 0 0 clamp(4px, 1vh, 6px) 0;
         letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: clamp(8px, 2vw, 12px);
+
+        .gender-info {
+          display: flex;
+          align-items: center;
+          gap: clamp(4px, 1vw, 6px);
+          font-size: clamp(14px, 3.5vw, 16px);
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.8);
+
+          .gender-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(14px, 3.5vw, 16px);
+            color: rgba(255, 255, 255, 0.9);
+            
+            i {
+              margin: 0;
+              padding: 0;
+              line-height: 1;
+            }
+          }
+        }
       }
 
       .user-age {

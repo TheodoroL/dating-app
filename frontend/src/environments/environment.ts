@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8080'
+  apiUrl: 'https://your-domain.com' // Substitua pela URL do seu servidor em produção
 };

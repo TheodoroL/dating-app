@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 import { MessageService, Conversation } from '../../services/message.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-messages',
@@ -26,7 +27,6 @@ export class MessagesComponent implements OnInit {
     this.isLoading = true;
     this.messageService.getConversations().subscribe({
       next: (response) => {
-        console.log('📨 Conversas carregadas:', response);
         this.conversations = response.conversations || [];
         this.isLoading = false;
       },
@@ -47,7 +47,7 @@ export class MessagesComponent implements OnInit {
       photoUrl = photoUrl.replace('/uploads/', '/');
     }
     
-    return `http://localhost:8080/uploads${photoUrl}`;
+    return `${environment.apiUrl}/uploads${photoUrl}`;
   }
 
   getLastMessageText(conversation: Conversation): string {
@@ -69,7 +69,6 @@ export class MessagesComponent implements OnInit {
   }
 
   openConversation(conversation: Conversation) {
-    console.log('💬 Abrindo conversa:', conversation.matchId);
     this.router.navigate(['/chat', conversation.matchId]);
   }
 }

@@ -47,20 +47,9 @@ export class ProfileDetailsComponent {
   }
 
   onRegister() {
-    console.log('🔵 onRegister chamado');
-    console.log('Dados do formulário:', {
-      firstname: this.firstname,
-      lastname: this.lastname,
-      email: this.email,
-      password: this.password,
-      dob: this.dob,
-      gender: this.gender,
-      preference: this.preference
-    });
 
     if (!this.firstname || !this.lastname || !this.email || !this.password || !this.dob) {
       this.errorMessage = 'Por favor, preencha todos os campos obrigatórios';
-      console.log('❌ Campos obrigatórios não preenchidos');
       return;
     }
 
@@ -77,16 +66,12 @@ export class ProfileDetailsComponent {
       preference: this.preference
     };
 
-    console.log('📤 Enviando dados para o backend:', userData);
-    console.log('📷 Foto selecionada:', this.selectedFile ? 'Sim' : 'Não');
-
     const registerObservable = this.selectedFile
       ? this.authService.registerWithPhoto(userData, this.selectedFile)
       : this.authService.register(userData);
 
     registerObservable.subscribe({
-      next: (user) => {
-        console.log('✅ Usuário registrado com sucesso:', user);
+      next: () => {
         alert('Cadastro realizado com sucesso! Faça login para continuar.');
         this.router.navigate(['/login']);
       },
