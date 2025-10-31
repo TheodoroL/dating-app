@@ -7,7 +7,7 @@
     "format": "biome format --write",
     "format:check": "biome format --check",
     "check": "biome check",
-    "build": "tsup src/index.ts --out-dir dist --format esm --clean",
+    "build": "npx tsup src/index.ts --out-dir dist --format esm --clean",
 
     "dev": "tsx watch src/index.ts",
     "start": "node .",
