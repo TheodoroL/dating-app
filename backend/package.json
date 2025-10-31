@@ -2,13 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "format": "biome format --write",
     "format:check": "biome format --check",
     "check": "biome check",
+    "build": "npx tsc",
     "dev": "tsx watch src/index.ts",
-    "start": "npx tsc && node dist/index.js",
+    "start": "node .",
     "db:seed": "tsx prisma/seed.ts"
   },
   "prisma": {
